@@ -5,9 +5,8 @@
             <div class="tile" style="font-size:40px; font-weight:bold;">15°C</div>
 
             <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3">weatherboy</div>
-            <div class="tile" style="position:relative">
-                <img src="/wind.png" style="width:150px;position:absolute;transform: rotate(45deg);">
-                <div style="position:absolute;color:#666;padding:58px;font-size:30px;font-weight:bold;text-align: center;">30</div>
+            <div class="tile">
+                <Wind :size="150" :speed="5" :direction="180"></Wind>
             </div>
             <div class="tile">Sun</div>
             <div class="tile">Press</div>
@@ -16,12 +15,11 @@
 
 
 
-            <div class="tile">Metoffice Day 1<br>temp<br>weather<br>wind+dir</div>
-            <div class="tile">Metoffice Day 2</div>
-            <div class="tile">Metoffice Day 3</div>
-            <div class="tile">Metoffice Day 4</div>
-            <div class="tile">Metoffice Day 5</div>
-
+            <div class="tile"><MetofficeDay :day="days[1]"></MetofficeDay></div>
+            <div class="tile"><MetofficeDay :day="days[2]"></MetofficeDay></div>
+            <div class="tile"><MetofficeDay :day="days[3]"></MetofficeDay></div>
+            <div class="tile"><MetofficeDay :day="days[4]"></MetofficeDay></div>
+            <div class="tile"><MetofficeDay :day="days[5]"></MetofficeDay></div>
 
     </div>
 
@@ -32,8 +30,23 @@
     import { type Ref, onMounted, ref, reactive, computed, watch } from "vue";
     import MetofficeData from "@/utilities/MetofficeData";
 
-    onMounted(() => {
-        MetofficeData.load();
+    import Wind from "@/components/Wind.vue";
+    import MetofficeDay from "@/components/MetofficeDay.vue";
+
+    const days: Ref<Array<IForecastDay>> = ref([]);
+
+    onMounted(async() => {
+        console.log("loading...");
+        days.value = await MetofficeData.load();
+
+        //console.log("data = ", days);
+
+        console.log(`time 0 = ${days.value[0]?.time} | symbol 0 = ${days.value[0]?.daySignificantWeatherCode}`);
+        console.log(`time 1 = ${days.value[1]?.time} | symbol 1 = ${days.value[1]?.daySignificantWeatherCode}`);
+        console.log(`time 2 = ${days.value[2]?.time} | symbol 2 = ${days.value[2]?.daySignificantWeatherCode}`);
+        console.log(`time 3 = ${days.value[3]?.time} | symbol 3 = ${days.value[3]?.daySignificantWeatherCode}`);
+
+        console.log("tomorrow = ", days.value[2]);
     });
 
 </script>
@@ -58,3 +71,4 @@
     }
 
 </style>
+

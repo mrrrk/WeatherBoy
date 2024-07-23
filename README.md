@@ -2,8 +2,14 @@
 
 ## To-do
 
-Weather symbols
-UI for metoffice
+Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
+  - get data + store locally with timestamp - DONE
+  - error handling
+  - display time stamp?
+  - refresh periodically (if timestamp < x)
+
+Metoffice day component
+Weatherboy component
 
 ## metoffice
 
