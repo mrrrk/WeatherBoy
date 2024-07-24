@@ -12,14 +12,12 @@
             <img src="/Sunset.png" style="width: 70px" />
             <div style="text-align:center">{{sunsetText}}</div>
         </div>
-
     </div>
 
-    <!-- <div style="height: 30px;background-image:url("/MoonPhases.png");" /> -->
-
     <div class="d-flex">
-        <div class="flex-grow-1">{{ moonPhaseText }}</div>
-        <div><canvas ref="moonCanvas" width="60" height="60" /></div>
+        <div class="flex-grow-1" style="padding-top:8px">{{ moonPhaseText }}</div>
+        <div style="width:20px"></div>
+        <canvas ref="moonCanvas" width="60" height="60" />
     </div>
 </template>
 
@@ -31,27 +29,32 @@
     import type { ISunriseSunset     } from "@/model/ISunriseSunset";
 
     const data: Ref<ISunriseSunset|null> = ref(null);
-
     const moonCanvas: Ref<HTMLCanvasElement|undefined> = ref();
-
     const moonPhaseText = ref("");
 
     onMounted(async() => {
-        data.value = await SunriseSunset.load();
 
-        console.log("DATA = ", data.value);
-
+        //console.log("DATA = ", data.value);
 
         // let p = 0;
         // setInterval(() => {
         //     drawMoon(p);
-        //     p += 1;
-        //     if (p >= 100) p = 0;
-        // }, 100);
+        //     moonPhaseText.value = getMoonPhaseText(p);
+        //     p += 0.01;
+        //     if (p >= 1) p = 0;
+        // }, 200);
 
-        const f = Moon.lunarCycleFraction();
-        drawMoon(f);
-        moonPhaseText.value = getMoonPhaseText(f);
+        const refresh = async () => {
+            data.value = await SunriseSunset.load();
+            const f = Moon.lunarCycleFraction();
+            drawMoon(f);
+            moonPhaseText.value = getMoonPhaseText(f);
+        }
+
+        refresh();
+
+        // update a couple of times a day
+        setInterval(refresh, 1000 * 60 * 60 * 12);
 
     });
 
@@ -72,7 +75,7 @@
 
     const getMoonPhaseText = (lunarCycleFraction: number) => {
         const f = lunarCycleFraction + 0.0625;
-        console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
+        //console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
         switch (true) {
             case f < 0.125: return "new moon";
             case f < 0.25: return "waxing crescent";
@@ -82,10 +85,11 @@
             case f < 0.75: return "waning gibbous";
             case f < 0.875: return "last quarter";
             case f < 1: return "waning crescent";
-            default : return "full moon";
+            default : return "new moon";
         }
     }
 
+    // todo? rotate through cycle for UK pov?
     const drawMoon = (lunarCycleFraction: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;
@@ -93,77 +97,43 @@
         if (!context) return;
         const centreX = canvas.width / 2.0;
         const centreY = canvas.height / 2.0;
-        const radius = Math.min(centreX, centreY) - 2;
-
+        const radius = Math.min(centreX, centreY) - 1.0;
         const shadow = "#6688FF";
 
-        //console.log(`"### W=${canvas.width} | H=${canvas.width} | perc = ${percent}`);
-
         const angle = Math.PI * 2.0 * lunarCycleFraction;
-
-        const x = Math.abs(radius * Math.cos(angle));
+        const crecentWidth = Math.abs(radius * Math.cos(angle));
 
         //console.log(`"### A = ${360 * angle / (Math.PI * 2)} | r = ${radius} | cos = ${Math.cos(angle)} | x = ${x}`);
 
         context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // rotate - TODO - what angle???
+        // https://svs.gsfc.nasa.gov/5187/ ??? (no - libration is a different thing)
+
+        // context.translate(centreX, centreY);
+        // context.rotate(Math.PI / 4);
+        // context.translate(-centreX, -centreY);
 
         context.beginPath();
         context.arc(centreX, centreY, radius, 0.0, 2.0 * Math.PI, false);
         context.fillStyle = shadow;
         context.fill();
 
-
         if(angle < Math.PI / 2) {
-            //console.log("...1ST");
-
-            // full LH semicircle
-            context.beginPath();
-            context.fillStyle = "white";
-            context.ellipse(centreX, centreY, radius, radius, 0, Math.PI * 0.5, Math.PI * 1.5);
-            context.fill();
-
-            // take a chip out of it
-            context.beginPath();
-            context.fillStyle = shadow;
-            context.ellipse(centreX, centreY, x, radius, 0, Math.PI * 0.5, Math.PI * 1.5);
-            context.fill();
+            // new moon -> waxing crecent -> quarter
+            drawCrecent(context, shadow, centreX, centreY, crecentWidth, radius, true);
         }
         else if(angle < Math.PI) {
-            //console.log("...2ND");
-
-
-            context.beginPath();
-            context.fillStyle = "white";
-            // left side = full semicircle
-            context.ellipse(centreX, centreY, radius, radius, 0, Math.PI * 0.5, Math.PI * 1.5);
-            // right = semi-ellipse
-            context.ellipse(centreX, centreY, x, radius, 0, Math.PI * 1.5, Math.PI * 0.5);
-            context.fill();
+            // quarter -> waxing gibbous -> full moon
+            drawGibbous(context, centreX, centreY, crecentWidth, radius, true);
         }
         else if(angle < 3 * Math.PI / 2) {
-            //console.log("...3RD");
-            context.beginPath();
-            context.fillStyle = "white";
-            // right side = full semicircle
-            context.ellipse(centreX, centreY, radius, radius, 0, Math.PI * 1.5, Math.PI * 0.5);
-            // left = semi-ellipse
-            context.ellipse(centreX, centreY, x, radius, 0, Math.PI * 0.5, Math.PI * 1.5);
-            context.fill();
+            // full moon -> waning gibbous -> last quarter
+            drawGibbous(context, centreX, centreY, crecentWidth, radius, false);
         }
         else {
-            //console.log("...4TH");
-
-            // full RH semicircle
-            context.beginPath();
-            context.fillStyle = "white";
-            context.ellipse(centreX, centreY, radius, radius, 0, Math.PI * 1.5, Math.PI * 0.5);
-            context.fill();
-
-            // take a chip out of it
-            context.beginPath();
-            context.fillStyle = shadow;
-            context.ellipse(centreX, centreY, x, radius, 0, Math.PI * 1.5, Math.PI * 0.5);
-            context.fill();
+            // last quarter -> waning crecent -> new moon
+            drawCrecent(context, shadow, centreX, centreY, crecentWidth, radius, false);
         }
 
         // bounding circle
@@ -173,6 +143,32 @@
         context.strokeStyle = "white";
         context.stroke();
 
+
+    }
+
+    const drawCrecent = (context: CanvasRenderingContext2D, shadow: string, x: number, y: number, w:number, r: number, isWaxing: boolean) => {
+        const startAngle = isWaxing ? Math.PI * 1.5 : Math.PI * 0.5;
+        const endAngle = isWaxing ? Math.PI * 0.5 : Math.PI * 1.5;
+        // full semicircle
+        context.beginPath();
+        context.fillStyle = "white";
+        context.ellipse(x, y, r, r, 0, startAngle, endAngle);
+        context.fill();
+        // take a chip out of it
+        context.beginPath();
+        context.fillStyle = shadow;
+        context.ellipse(x, y, w, r, 0, startAngle, endAngle);
+        context.fill();
+    }
+
+    const drawGibbous = (context: CanvasRenderingContext2D, x: number, y: number, w:number, r: number, isWaxing: boolean) => {
+        const angleA = isWaxing ? Math.PI * 1.5 : Math.PI * 0.5;
+        const angleB = isWaxing ? Math.PI * 0.5 : Math.PI * 1.5;
+        context.beginPath();
+        context.fillStyle = "white";
+        context.ellipse(x, y, r, r, 0, angleA, angleB);
+        context.ellipse(x, y, w, r, 0, angleB, angleA);
+        context.fill();
     }
 
 </script>
