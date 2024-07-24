@@ -15,11 +15,11 @@
 
     </div>
 
-    <!-- <div style="height: 30px;background-image:url('/MoonPhases.png');" /> -->
+    <!-- <div style="height: 30px;background-image:url("/MoonPhases.png");" /> -->
 
-    <div>
-        <canvas ref="moonCanvas" width="60" height="60" />
-        <!-- <div :style="phaseStyle"></div> -->
+    <div class="d-flex">
+        <div class="flex-grow-1">{{ moonPhaseText }}</div>
+        <div><canvas ref="moonCanvas" width="60" height="60" /></div>
     </div>
 </template>
 
@@ -34,25 +34,24 @@
 
     const moonCanvas: Ref<HTMLCanvasElement|undefined> = ref();
 
+    const moonPhaseText = ref("");
+
     onMounted(async() => {
         data.value = await SunriseSunset.load();
 
         console.log("DATA = ", data.value);
 
-        console.log("moon perc = ", Moon.getLunarAgePercent());
-        console.log("moon age = ", Moon.lunarAgeDays());
-        console.log("moon = ", Moon.lunarFraction());
 
-        let p = 0;
-        setInterval(() => {
-            drawMoon(p);
-            p += 1;
-            if (p >= 100) p = 0;
-        }, 100);
+        // let p = 0;
+        // setInterval(() => {
+        //     drawMoon(p);
+        //     p += 1;
+        //     if (p >= 100) p = 0;
+        // }, 100);
 
-        drawMoon(80);
-
-        //drawMoon(6.25);
+        const f = Moon.lunarCycleFraction();
+        drawMoon(f);
+        moonPhaseText.value = getMoonPhaseText(f);
 
     });
 
@@ -71,23 +70,26 @@
 
     const sunsetText = computed(() => formatTime(data.value?.results.sunset));
 
-    // const phaseStyle = computed(() => ({
-    //     position: "absolute",
-    //     top: "0px",
-    //     left: "0px",
-    //     height: "60px",
-    //     width: "60px",
-    //     backgroundImage: "url('\MoonPhases60h.png')",
-    //     backgroundRepeat: "no-repeat",
-    //     backgroundPosition: "-145px 0",
-    //     //backgroundPosition: "-72px 0",
-    //     //backgroundPosition: "0 0",
-    // }));
+    const getMoonPhaseText = (lunarCycleFraction: number) => {
+        const f = lunarCycleFraction + 0.0625;
+        console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
+        switch (true) {
+            case f < 0.125: return "new moon";
+            case f < 0.25: return "waxing crescent";
+            case f < 0.375: return "quarter moon";
+            case f < 0.5: return "waxing gibbous";
+            case f < 0.625: return "full moon";
+            case f < 0.75: return "waning gibbous";
+            case f < 0.875: return "last quarter";
+            case f < 1: return "waning crescent";
+            default : return "full moon";
+        }
+    }
 
-    const drawMoon = (percent: number) => {
+    const drawMoon = (lunarCycleFraction: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext("2d");
         if (!context) return;
         const centreX = canvas.width / 2.0;
         const centreY = canvas.height / 2.0;
@@ -97,7 +99,7 @@
 
         //console.log(`"### W=${canvas.width} | H=${canvas.width} | perc = ${percent}`);
 
-        const angle = Math.PI * 0.02 * percent;
+        const angle = Math.PI * 2.0 * lunarCycleFraction;
 
         const x = Math.abs(radius * Math.cos(angle));
 
@@ -113,6 +115,7 @@
 
         if(angle < Math.PI / 2) {
             //console.log("...1ST");
+
             // full LH semicircle
             context.beginPath();
             context.fillStyle = "white";
@@ -127,6 +130,8 @@
         }
         else if(angle < Math.PI) {
             //console.log("...2ND");
+
+
             context.beginPath();
             context.fillStyle = "white";
             // left side = full semicircle
