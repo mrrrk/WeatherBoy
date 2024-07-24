@@ -28,3 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+[Ss]ecrets.ts
+[Ss]ecrets.js

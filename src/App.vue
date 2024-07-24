@@ -2,35 +2,37 @@
 
    <div class="grid-container">
 
-            <div class="tile" style="font-size:40px; font-weight:bold;">15°C</div>
+        <div class="tile"><Temperature :day="days[1]" /></div>
+        <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3"><WeatherBoy :day="days[1]" /></div>
+        <div class="tile"><Wind :size="150" :speed="5" :direction="180"></Wind></div>
+        <div class="tile"><TimeAndDate /></div>
+        <div class="tile"><PressureAndHumidity :day="days[1]" /></div>
+        <div class="tile"><SunAndMoon /></div>
+        <div class="tile"><ExtraInfo :day="days[1]" /></div>
 
-            <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3">weatherboy</div>
-            <div class="tile">
-                <Wind :size="150" :speed="5" :direction="180"></Wind>
-            </div>
-            <div class="tile">Sun</div>
-            <div class="tile">Press</div>
-            <div class="tile">Humidity</div>
-            <div class="tile">Moon</div>
-
-
-
-            <div class="tile"><MetofficeDay :day="days[1]"></MetofficeDay></div>
-            <div class="tile"><MetofficeDay :day="days[2]"></MetofficeDay></div>
-            <div class="tile"><MetofficeDay :day="days[3]"></MetofficeDay></div>
-            <div class="tile"><MetofficeDay :day="days[4]"></MetofficeDay></div>
-            <div class="tile"><MetofficeDay :day="days[5]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :day="days[1]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :day="days[2]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :day="days[3]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :day="days[4]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :day="days[5]"></MetofficeDay></div>
 
     </div>
 
 </template>
+
 
 <script setup lang="ts">
 
     import { type Ref, onMounted, ref, reactive, computed, watch } from "vue";
     import MetofficeData from "@/utilities/MetofficeData";
 
+    import Temperature from "@/components/Temperature.vue";
+    import WeatherBoy from "@/components/WeatherBoy.vue";
     import Wind from "@/components/Wind.vue";
+    import SunAndMoon from "@/components/SunAndMoon.vue";
+    import PressureAndHumidity from "@/components/PressureAndHumidity.vue";
+    import TimeAndDate from "@/components/TimeAndDate.vue";
+    import ExtraInfo from "@/components/ExtraInfo.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
 
     const days: Ref<Array<IForecastDay>> = ref([]);
