@@ -2,12 +2,21 @@
     <div>Extra Info</div>
     <div>{{ forecastWhen }}</div>
 
+    <div>Mon 8am </div>
+    <div>Mon 4pm </div>
+    <div>Wed 8am </div>
+    <div>Wed 4pm </div>
+
+    <Wind :size="36" :speed="20" :direction="0"></Wind>
+
 </template>
 
 <script setup lang="ts">
 
     import { computed, onMounted } from "vue";
     import type { IForecast } from "@/model/IForecast";
+
+    import Wind from "@/components/Wind.vue";
 
     const props = defineProps<{
         forecast: IForecast|undefined;

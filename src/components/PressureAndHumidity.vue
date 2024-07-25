@@ -1,6 +1,7 @@
 <template>
     <div>
-        Pressure<br>Humidity
+        Pressure: {{pressureText}}<br>
+        Humidity: {{ humidityText }}
     </div>
 </template>
 
@@ -13,7 +14,7 @@
         forecast: IForecast|undefined;
     }>();
 
-    const temperatureMinText = computed(() => `${props.forecast?.nightMinScreenTemperature}°C`);
-    const temperatureMaxText = computed(() => `${props.forecast?.dayMaxScreenTemperature}°C`);
+    const pressureText = computed(() => `${Math.round((props.forecast?.mslp ?? 0) / 100) } mb`);
+    const humidityText = computed(() => `${Math.round(props.forecast?.screenRelativeHumidity)}%`);
 
 </script>
