@@ -7,13 +7,13 @@
 <script setup lang="ts">
 
     import { computed } from "vue";
-    import type { IForecastDay } from "@/model/IForecastDay";
+    import type { IForecast } from "@/model/IForecast";
 
     const props = defineProps<{
-        day: IForecastDay|undefined;
+        forecast: IForecast|undefined;
     }>();
 
-    const temperatureMinText = computed(() => `${props.day?.nightMinScreenTemperature}°C`);
-    const temperatureMaxText = computed(() => `${props.day?.dayMaxScreenTemperature}°C`);
+    const temperatureMinText = computed(() => `${props.forecast?.nightMinScreenTemperature}°C`);
+    const temperatureMaxText = computed(() => `${props.forecast?.dayMaxScreenTemperature}°C`);
 
 </script>

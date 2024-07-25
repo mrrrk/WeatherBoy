@@ -2,19 +2,27 @@
 
    <div class="grid-container">
 
-        <div class="tile"><Temperature :day="days[1]" /></div>
-        <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3"><WeatherBoy :day="days[1]" /></div>
-        <div class="tile"><Wind :size="150" :speed="5" :direction="180"></Wind></div>
-        <div class="tile"><TimeAndDate /></div>
-        <div class="tile"><PressureAndHumidity :day="days[1]" /></div>
-        <div class="tile"><SunAndMoon /></div>
-        <div class="tile"><ExtraInfo :day="days[1]" /></div>
+        <div class="tile"><Temperature :forecast="currentHourly" /></div>
+        <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3"><WeatherBoy :forecast="currentHourly" /></div>
+        <div class="tile" style="position:relative">
+            <Wind :size="150" :speed="windSpeed" :direction="windDirection"></Wind>
 
-        <div class="tile"><MetofficeDay :day="days[1]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :day="days[2]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :day="days[3]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :day="days[4]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :day="days[5]"></MetofficeDay></div>
+
+            <div style="position:absolute;bottom:10px;left:10px">
+                {{ windDirectionText }} - {{ windGustText }}
+            </div>
+
+        </div>
+        <div class="tile"><TimeAndDate /></div>
+        <div class="tile"><PressureAndHumidity :forecast="currentHourly" /></div>
+        <div class="tile"><SunAndMoon /></div>
+        <div class="tile"><ExtraInfo :forecast="currentHourly" /></div>
+
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[1]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[2]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[3]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[4]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[5]"></MetofficeDay></div>
 
     </div>
 
@@ -35,20 +43,48 @@
     import ExtraInfo from "@/components/ExtraInfo.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
 
-    const days: Ref<Array<IForecastDay>> = ref([]);
+    const dayForecasts: Ref<Array<IForecast>> = ref([]);
+    const hourForecasts: Ref<Array<IForecast>> = ref([]);
 
-    onMounted(async() => {
+    onMounted(() => {
+        refresh();
+        // run refresh every minute - but note MetofficeData has its own caching policy that prevents too many requests...
+        //setInterval(refresh, 60000);
+    });
+
+    const refresh = async () => {
         console.log("loading...");
-        days.value = await MetofficeData.load();
+        dayForecasts.value = await MetofficeData.load("daily");
+        hourForecasts.value = await MetofficeData.load("hourly"); // gets next 48 hours from now...
 
-        //console.log("data = ", days);
+        console.log(`+++ refresh | day forecasts: ${dayForecasts.value?.length} | hour forecasts: ${hourForecasts.value?.length}`);
 
-        console.log(`time 0 = ${days.value[0]?.time} | symbol 0 = ${days.value[0]?.daySignificantWeatherCode}`);
-        console.log(`time 1 = ${days.value[1]?.time} | symbol 1 = ${days.value[1]?.daySignificantWeatherCode}`);
-        console.log(`time 2 = ${days.value[2]?.time} | symbol 2 = ${days.value[2]?.daySignificantWeatherCode}`);
-        console.log(`time 3 = ${days.value[3]?.time} | symbol 3 = ${days.value[3]?.daySignificantWeatherCode}`);
+        console.log("tomorrow = ", dayForecasts.value[2]);
+    }
 
-        console.log("tomorrow = ", days.value[2]);
+    // TODO - check times
+    const currentHourly1 = computed(() => hourForecasts.value[0] );
+
+    // possible to have forecasts from past - so try to get the current one
+    const currentHourly = computed(() => {
+        const now = new Date();
+        const topOfTheHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), 0, 0, 0);
+        // relies on forcasts being in chronological order
+        return hourForecasts.value.find(f => f.when != null && f.when >= topOfTheHour);
+    });
+
+    const windSpeed = computed(() => currentHourly.value?.windSpeed10m ?? 99 );
+    const windDirection = computed(() => currentHourly.value?.windDirectionFrom10m ?? 0 );
+
+    const windGustText = computed(() => {
+        return `Gust: ${Math.round(currentHourly.value?.max10mWindGust * 2.23694)}`;
+    });
+
+    const windDirectionText = computed(() => {
+        const bearing = currentHourly.value?.windDirectionFrom10m;
+        const i = Math.round(bearing / 22.5);
+        const dirctions = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+        return dirctions[(i % 16)];
     });
 
 </script>
@@ -73,4 +109,3 @@
     }
 
 </style>
-

@@ -11,17 +11,21 @@ Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
 Metoffice day component
 Weatherboy component
 
+## sunset / sunrise
+
+   - API
+   - Calculate https://en.wikipedia.org/wiki/Sunrise_equation
+
 ## metoffice
 
 https://github.com/MetOffice/weather_datahub_utilities/blob/main/site_specific_download/Documentation.md
 
 
-360 cals per day free = 15 per hour = every 4 mins
+360 cals per day free = max 15 per hour = max every 4 mins
 
-https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/daily
+endpoint: https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/[timeSteps]
 
-url
-    timesteps (hourly, three-hourly, daily)
+timesteps = hourly | three-hourly | daily
 
 headers
     apiKey

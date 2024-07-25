@@ -1,6 +1,6 @@
 <template>
     <div style="position:relative">
-        <div style="position:absolute;top:0;left:0">{{ dayText }} | {{ props.day?.daySignificantWeatherCode  }}</div>
+        <div style="position:absolute;top:0;left:0">{{ dayText }}</div>
 
         <div style="height:80px;position:absolute;top:30px;left:0">
             <img :src="symbolSource" :style="symbolStyle">
@@ -26,21 +26,22 @@
 <script setup lang="ts">
 
     import { computed } from "vue";
-    import type { IForecastDay } from "@/model/IForecastDay";
+    import type { IForecast } from "@/model/IForecast";
     import Wind from "@/components/Wind.vue";
+    import { symbolImageFileNames } from "@/model/Enums";
 
     // const props = defineProps({
     //     day: { type: object, required: true }
     // });
 
     const props = defineProps<{
-        day: IForecastDay|undefined;
+        forecast: IForecast|undefined;
     }>();
 
     const dayText = computed(() => {
         const days = [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ];
-        if(props.day == null) return "- - -";
-        const date = new Date(Date.parse(props.day.time));
+        if(props.forecast == null) return "- - -";
+        const date = new Date(Date.parse(props.forecast.time));
         const day = date.getDay();
         return days[day];
     });
@@ -51,35 +52,35 @@
     }));
 
     const symbolSource = computed(() => {
-        if (props.day?.daySignificantWeatherCode == null) return "/WeatherSymbols/Unknown.png";
-        const i = props.day?.daySignificantWeatherCode ?? 0;
+        if (props.forecast?.daySignificantWeatherCode == null) return "/WeatherSymbols/Unknown.png";
+        const i = props.forecast?.daySignificantWeatherCode ?? 0;
         if(i < 0 || i >= symbolImageFileNames.length) return "/WeatherSymbols/Unknown.png";
         return `/WeatherSymbols/${symbolImageFileNames[i]}`;
     });
 
     const dayTempText = computed(() => {
-        return `${Math.round(props.day?.dayMaxScreenTemperature)}°C`;
+        return `${Math.round(props.forecast?.dayMaxScreenTemperature)}°C`;
     });
 
     const nightTempText = computed(() => {
-        return `${Math.round(props.day?.nightMinScreenTemperature)}°C`;
+        return `${Math.round(props.forecast?.nightMinScreenTemperature)}°C`;
     });
 
     const windDirection = computed(() => {
-        return Number(props.day?.midday10MWindDirection);
+        return Number(props.forecast?.midday10MWindDirection);
     });
 
     const windSpeed = computed(() => {
-        return Number(props.day?.midday10MWindSpeed);
+        return Number(props.forecast?.midday10MWindSpeed);
     });
 
     const windGustText = computed(() => {
-        return `Gust: ${Math.round(props.day?.midday10MWindGust * 2.23694)}`; // m/s
-        //return `Gust: ${Math.round(props.day?.midday10MWindGust * 1.15078)}`; // knots
+        return `Gust: ${Math.round(props.forecast?.midday10MWindGust * 2.23694)}`; // m/s
+        //return `Gust: ${Math.round(props.forecast?.midday10MWindGust * 1.15078)}`; // knots
     });
 
     const windDirectionText = computed(() => {
-        const bearing = props.day?.midday10MWindDirection;
+        const bearing = props.forecast?.midday10MWindDirection;
         const i = Math.round(bearing / 22.5);
         const dirctions = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
         return dirctions[(i % 16)];
@@ -90,38 +91,5 @@
     //     position: "absolute",
     //     transform: `rotate(${props.direction}deg)`
     // }));
-
-    const symbolImageFileNames = {
-        0: "0-ClearNight.png",
-        1: "1-SunnyDay.png",
-        2: "2-PartlyCloudyNight.png",
-        3: "3-PartlyCloudyDay.png",
-        5: "5-Mist.png",
-        6: "6-Fog.png",
-        7: "7-Cloudy.png",
-        8: "8-Overcast.png",
-        9: "9-LightRainShowerNight.png",
-        10: "10-LightRainShowerDay.png",
-        11: "11-Drizzle.png",
-        12: "12-LightRain.png",
-        13: "13-HeavyRainShowerNight.png",
-        14: "14-HeavyRainShowerDay.png",
-        15: "15-HeavyRain.png",
-        16: "16-SleetShowerNight.png",
-        17: "17-SleetShowerDay.png",
-        18: "18-Sleet.png",
-        19: "19-HailShowerNight.png",
-        20: "20-HailShowerDay.png",
-        21: "21-Hail.png",
-        22: "22-LightSnowShowerNight.png",
-        23: "23-LightSnowShowerDay.png",
-        24: "24-LightSnow.png",
-        25: "25-HeavySnowShowerNight.png",
-        26: "26-HeavySnowShowerDay.png",
-        27: "27-HeavySnow.png",
-        28: "28-ThunderShowerNight.png",
-        29: "29-ThunderShowerDay.png",
-        30: "30-Thunder.png"
-    };
 
 </script>

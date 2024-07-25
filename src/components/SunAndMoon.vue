@@ -74,22 +74,32 @@
     const sunsetText = computed(() => formatTime(data.value?.results.sunset));
 
     const getMoonPhaseText = (lunarCycleFraction: number) => {
+        const percent = Moon.illuminationPercent();
+
+        const degrees = Math.round(lunarCycleFraction * 360);
+
+        // are these fractions right?  maybe not so much...
+
         const f = lunarCycleFraction + 0.0625;
         //console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
         switch (true) {
-            case f < 0.125: return "new moon";
-            case f < 0.25: return "waxing crescent";
-            case f < 0.375: return "quarter moon";
-            case f < 0.5: return "waxing gibbous";
-            case f < 0.625: return "full moon";
-            case f < 0.75: return "waning gibbous";
-            case f < 0.875: return "last quarter";
-            case f < 1: return "waning crescent";
-            default : return "new moon";
+            case f < 0.125: return `new moon (${percent}% ${degrees}°)`;
+            case f < 0.25: return `waxing crescent (${percent}% ${degrees}°)`;
+            case f < 0.375: return `quarter moon (${percent}% ${degrees}°)`; // ???
+            case f < 0.5: return `waxing gibbous (${percent}% ${degrees}°)`;
+            case f < 0.625: return `full moon (${percent}% ${degrees}°)`;
+            case f < 0.75: return `waning gibbous (${percent}% ${degrees}°)`;
+            case f < 0.875: return `last quarter (${percent}% ${degrees}°)`;
+            case f < 1: return `waning crescent (${percent}% ${degrees}°)`;
+            default : return `new moon (${percent}% ${degrees}°)`;
         }
     }
 
     // todo? rotate through cycle for UK pov?
+
+    // maybe this code is better?
+    // https://celestialprogramming.com/snippets/moonPhaseRender.html
+
     const drawMoon = (lunarCycleFraction: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;

@@ -1,20 +1,24 @@
 <template>
     <div>
-        <div style="font-size:40px; font-weight:bold;">{{ temperatureMaxText }}</div>
-        <div style="font-size:32px;">{{ temperatureMinText }}</div>
+        <div style="font-size:40px; font-weight:bold;">{{ externalTemperature }}</div>
+
+        <div>feels like {{ feelsLikeTemperature }}</div>
+
+        <div style="font-size:32px;">{{ internalTemperature }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
 
     import { computed } from "vue";
-    import type { IForecastDay } from "@/model/IForecastDay";
+    import type { IForecast } from "@/model/IForecast";
 
     const props = defineProps<{
-        day: IForecastDay|undefined;
+        forecast: IForecast|undefined;
     }>();
 
-    const temperatureMinText = computed(() => `${props.day?.nightMinScreenTemperature}°C`);
-    const temperatureMaxText = computed(() => `${props.day?.dayMaxScreenTemperature}°C`);
+    const externalTemperature = computed(() => `${Math.round(props.forecast?.screenTemperature ?? 99)}°C`);
+    const feelsLikeTemperature = computed(() => `${Math.round(props.forecast?.feelsLikeTemperature ?? 99)}°C`);
+    const internalTemperature = computed(() => `to do...`);
 
 </script>
