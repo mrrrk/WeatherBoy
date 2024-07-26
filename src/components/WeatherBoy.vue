@@ -43,16 +43,16 @@ rate = {{ forecast?.precipitationRate }}<br>
         if(forecast.significantWeatherCode === 1 && forecast.feelsLikeTemperature > 22) return "/WeatherBoy/Trunks.png";
 
         const rain =
-            forecast.probOfPrecipitation > 70 ? "Rain2" :
-            forecast.probOfPrecipitation > 20 ? "Rain1" :
+            forecast.probOfPrecipitation >= 70 ? "Rain2" :
+            forecast.probOfPrecipitation >= 20 ? "Rain1" :
             "Dry";
         const clothes =
-            forecast.feelsLikeTemperature > 22 ? "Shorts" :
-            forecast.feelsLikeTemperature > 18 ? "Tshirt" :
-            forecast.feelsLikeTemperature > 14 ? "Sweatshirt" :
-            forecast.feelsLikeTemperature > 10 ? "Jumper" :
-            forecast.feelsLikeTemperature > 6 ? "Coat" :
-            forecast.feelsLikeTemperature > 2 ? "Scarf" :
+            forecast.feelsLikeTemperature >= 22 ? "Shorts" :
+            forecast.feelsLikeTemperature >= 17 ? "Tshirt" :
+            forecast.feelsLikeTemperature >= 14 ? "Sweatshirt" :
+            forecast.feelsLikeTemperature >= 10 ? "Jumper" :
+            forecast.feelsLikeTemperature >= 6 ? "Coat" :
+            forecast.feelsLikeTemperature >= 2 ? "Scarf" :
             "Hat";
 
         return `/WeatherBoy/${clothes}${rain}.png`;

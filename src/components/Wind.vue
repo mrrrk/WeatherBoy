@@ -15,7 +15,7 @@
         direction: { type: Number, required: true },
     });
 
-    const toMph = (speed: number) => Math.round(speed * 2.23694);
+    const toMph = (speedMps: number) => Math.round(speedMps * 2.23694);
 
     const imageStyle = computed(() => ({
         width: `${props.size}px`,
@@ -33,4 +33,5 @@
         fontSize: `${props.size / 4.0}px`,
         paddingTop: `${props.size / 2.8}px`
     }));
+
 </script>

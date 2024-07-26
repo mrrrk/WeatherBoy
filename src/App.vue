@@ -14,9 +14,9 @@
 
         </div>
         <div class="tile"><TimeAndDate /></div>
-        <div class="tile"><PressureAndHumidity :forecast="currentHourly" /></div>
+        <div class="tile"><Cycling :forecastHours="hourForecasts" /></div>
         <div class="tile"><SunAndMoon /></div>
-        <div class="tile"><ExtraInfo :forecast="currentHourly" /></div>
+        <div class="tile"><Extra :forecast="currentHourly" /></div>
 
         <div class="tile"><MetofficeDay :forecast="dayForecasts[1]"></MetofficeDay></div>
         <div class="tile"><MetofficeDay :forecast="dayForecasts[2]"></MetofficeDay></div>
@@ -38,9 +38,9 @@
     import WeatherBoy from "@/components/WeatherBoy.vue";
     import Wind from "@/components/Wind.vue";
     import SunAndMoon from "@/components/SunAndMoon.vue";
-    import PressureAndHumidity from "@/components/PressureAndHumidity.vue";
+    import Cycling from "@/components/Cycling.vue";
     import TimeAndDate from "@/components/TimeAndDate.vue";
-    import ExtraInfo from "@/components/ExtraInfo.vue";
+    import Extra from "@/components/Extra.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
 
     const dayForecasts: Ref<Array<IForecast>> = ref([]);
