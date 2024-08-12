@@ -3,18 +3,21 @@
 ## To-do
 
 Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
-  - get data + store locally with timestamp - DONE
+  - ✔️ get data + store locally with timestamp
   - error handling
   - display time stamp?
   - refresh periodically (if timestamp < x)
 
-Metoffice day component
-Weatherboy component
+✔️ Metoffice day component
+✔️ Weatherboy component
+
+☐ PWA stuff
 
 ## sunset / sunrise
 
-   - API
-   - Calculate https://en.wikipedia.org/wiki/Sunrise_equation
+   - ✔️
+   -  API
+   - ☐ Calculate ??? https://en.wikipedia.org/wiki/Sunrise_equation
 
 ## metoffice
 

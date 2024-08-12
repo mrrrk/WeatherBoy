@@ -34,6 +34,13 @@
 
     onMounted(async() => {
 
+        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-04T12:13:00"))));
+        console.log("qtr: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-12T16:18:00"))));
+        console.log("ful: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-19T19:25:00"))));
+        console.log("3rd: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-26T10:25:00"))));
+        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-09-03T02:55:00"))));
+        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-10-02T19:49:00"))));
+
         //console.log("DATA = ", data.value);
 
         // let p = 0;
@@ -46,9 +53,13 @@
 
         const refresh = async () => {
             data.value = await SunriseSunset.load();
-            const f = Moon.lunarCycleFraction();
-            drawMoon(f);
-            moonPhaseText.value = getMoonPhaseText(f);
+
+            const julianNow = Moon.julianDateFromUnixTime(new Date().getTime());
+            const phaseAngle = Moon.phaseAngleDegrees(julianNow);
+            const illuminatedPercent = Math.round(Moon.illuminatedFraction(phaseAngle) * 100);
+
+            drawMoon(phaseAngle);
+            moonPhaseText.value = getMoonPhaseText(phaseAngle, illuminatedPercent);
         }
 
         refresh();
@@ -73,34 +84,35 @@
 
     const sunsetText = computed(() => formatTime(data.value?.results.sunset));
 
-    const getMoonPhaseText = (lunarCycleFraction: number) => {
-        const percent = Moon.illuminationPercent();
+    const getMoonPhaseText = (phaseAngle: number, illuminationPercent: number) => {
+        //const percent = Moon.illuminationPercent();
 
-        const degrees = Math.round(lunarCycleFraction * 360);
+
 
         // are these fractions right?  maybe not so much...
 
-        const f = lunarCycleFraction + 0.0625;
+        const percentText = `(${illuminationPercent}% ph: ${Math.round(phaseAngle)}°)`;
+
+        const f = (phaseAngle + 22.5) / 360; // ???
         //console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
         switch (true) {
-            case f < 0.125: return `new moon (${percent}% ${degrees}°)`;
-            case f < 0.25: return `waxing crescent (${percent}% ${degrees}°)`;
-            case f < 0.375: return `quarter moon (${percent}% ${degrees}°)`; // ???
-            case f < 0.5: return `waxing gibbous (${percent}% ${degrees}°)`;
-            case f < 0.625: return `full moon (${percent}% ${degrees}°)`;
-            case f < 0.75: return `waning gibbous (${percent}% ${degrees}°)`;
-            case f < 0.875: return `last quarter (${percent}% ${degrees}°)`;
-            case f < 1: return `waning crescent (${percent}% ${degrees}°)`;
-            default : return `new moon (${percent}% ${degrees}°)`;
+            case f < 0.125: return `new moon ${percentText}`;
+            case f < 0.25: return `waxing crescent ${percentText}`;
+            case f < 0.375: return `quarter moon ${percentText}`; // ???
+            case f < 0.5: return `waxing gibbous ${percentText}`;
+            case f < 0.625: return `full moon ${percentText}`;
+            case f < 0.75: return `waning gibbous ${percentText}`;
+            case f < 0.875: return `last quarter ${percentText}`;
+            case f < 1: return `waning crescent ${percentText}`;
+            default : return `new moon ${percentText}`;
         }
     }
 
     // todo? rotate through cycle for UK pov?
 
-    // maybe this code is better?
-    // https://celestialprogramming.com/snippets/moonPhaseRender.html
+    // alternate approach: https://celestialprogramming.com/snippets/moonPhaseRender.html
 
-    const drawMoon = (lunarCycleFraction: number) => {
+    const drawMoon = (phaseAngleDegrees: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;
         const context = canvas.getContext("2d");
@@ -110,10 +122,8 @@
         const radius = Math.min(centreX, centreY) - 1.0;
         const shadow = "#6688FF";
 
-        const angle = Math.PI * 2.0 * lunarCycleFraction;
-        const crecentWidth = Math.abs(radius * Math.cos(angle));
-
-        //console.log(`"### A = ${360 * angle / (Math.PI * 2)} | r = ${radius} | cos = ${Math.cos(angle)} | x = ${x}`);
+        const phaseAngle = Math.PI * 2.0 * phaseAngleDegrees / 360;
+        const crecentWidth = Math.abs(radius * Math.cos(phaseAngle));
 
         context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -152,8 +162,6 @@
         context.lineWidth = 1;
         context.strokeStyle = "white";
         context.stroke();
-
-
     }
 
     const drawCrecent = (context: CanvasRenderingContext2D, shadow: string, x: number, y: number, w:number, r: number, isWaxing: boolean) => {
