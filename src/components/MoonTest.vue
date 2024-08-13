@@ -5,7 +5,7 @@
     <div class="d-flex" style="width:370px; flex-wrap: wrap">
         <div v-for="date in dates" style="margin-right:2px;margin-bottom:4px">
             <canvas :ref="setItemRef" width="50" height="50" />
-            <div style="font-size:10px">{{ dateText(date) }} {{ phaseAngleText(date) }}</div>
+            <div style="font-size:10px">{{ Stuff.dayMonthShort(date) }} {{ phaseAngleText(date) }}</div>
         </div>
 
     </div>
@@ -16,6 +16,7 @@
 
     import { onMounted, type Ref, ref, computed } from "vue";
     import Moon from "@/utilities/Moon";
+    import Stuff from "@/utilities/Stuff";
 
     const startDate = new Date(Date.parse("2024-08-04T12:13:00"));
     const dates: Ref<Array<Date>> = ref([...Array(29).keys()].map(i => new Date(startDate.getTime() + (i * 1000 * 60 * 60 * 24))));
@@ -27,7 +28,7 @@
 
         let i = 0;
         for(const date of dates.value) {
-            const julian = Moon.julianDateFromUnixTime(date.getTime());
+            const julian = Stuff.epochMillisToJulian(date.getTime());
             const phaseAngle = Moon.phaseAngleDegrees(julian);
             drawMoon(moonCanvasses[i++], phaseAngle, Moon.tiltDegrees(phaseAngle));
         }
@@ -52,7 +53,7 @@
             const response = await fetch(url);
             const respData = await response.json();
             //console.log(respData);
-            console.log(`"${dateText(new Date(Date.parse(respData.days[0].date)))}", ${respData.days[0].illumination},${respData.days[0].tilt}`);
+            console.log(`"${Stuff.dayMonthShort(new Date(Date.parse(respData.days[0].date)))}", ${respData.days[0].illumination},${respData.days[0].tilt}`);
             break; // uncomment to get all...
         }
     }
@@ -61,24 +62,13 @@
         moonCanvasses.push(canvas);
     }
 
-    const pad2 = (value: string|number) => {
-        const s = String(value);
-        return s.length == 1 ? `0${s}` : s;
-    }
-
-    const dateText = (date: Date) => {
-        //return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
-        return `${pad2(date.getDate())}/${pad2(date.getMonth() + 1)}`;
-    }
-
     const phaseAngleText = (date: Date) => {
-        const julian = Moon.julianDateFromUnixTime(date.getTime());
+        const julian = Stuff.epochMillisToJulian(date.getTime());
         return `${Math.round(Moon.phaseAngleDegrees(julian))}°`;
     }
 
     // ----
 
-    const radiansPerDegree = Math.PI / 180.0;
 
     const drawMoon = (canvas: HTMLCanvasElement|undefined, phaseAngleDegrees: number, tiltDegrees: number) => {
 
@@ -96,7 +86,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         context.translate(centreX, centreY);
-        context.rotate(tiltDegrees * radiansPerDegree);
+        context.rotate(Stuff.toRadians(tiltDegrees));
         context.translate(-centreX, -centreY);
 
         context.beginPath();
@@ -140,7 +130,7 @@
         // take a chip out of it
         context.beginPath();
         context.fillStyle = shadow;
-        context.ellipse(x, y, w, r, 0, startAngle, endAngle);
+        context.ellipse(x, y, w, r, 0, startAngle - 0.03, endAngle + 0.03); // started getting a thin line artefact after rotating - so extend these angles a little to fix it!
         context.fill();
     }
 

@@ -1,3 +1,5 @@
+// for SunriseSunset API
+
 export interface ISunriseSunset {
     results	: {
         sunrise: string;

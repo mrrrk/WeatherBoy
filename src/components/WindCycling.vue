@@ -10,7 +10,7 @@
 
     <!-- <div style="display:flex;position:relative">
         <img src="/wind.png" :style="imageStyle">
-        <div :style="textStyle">{{toMph(speed)}}</div>
+        <div :style="textStyle">{{Stuff.mpsToMph(speed)}}</div>
     </div> -->
 </template>
 
@@ -25,6 +25,7 @@ interface IColour {
 <script setup lang="ts">
 
     import { computed } from "vue";
+    import Stuff from "@/utilities/Stuff";
 
     const props = defineProps({
         size: { type: Number, required: false, default: 150 },
@@ -33,8 +34,6 @@ interface IColour {
         // 0 = cycling north,  90 = cycling east, etc.
         cyclingDirection: { type: Number, required: true }
     });
-
-
 
     const imageStyle = computed(() => ({
         position: "relative",
@@ -62,37 +61,25 @@ interface IColour {
         };
     });
 
-    const speedMph = computed(() => toMph(props.speed) );
+    const speedMph = computed(() => Stuff.mpsToMph(props.speed) );
 
     // // debug functions
-    // const to = computed(() => cyclingWindResistanceComponentMph(toMph(props.speed), props.direction, directionToDegrees));
-    // const from = computed(() => cyclingWindResistanceComponentMph(toMph(props.speed), props.direction, directionToDegrees + 180));
-
-    const toMph = (speedMps: number) => Math.round(speedMps * 2.23694);
-
-    const cyclingColour = computed(() => {
-        const c = cyclingColourValues();
-        return `rgb(${c.r} ${c.g} ${c.b})`;
-    });
-
-
-    //const textColor = (c: IColour): string => ((c.r * 0.299) + (c.g * 0.587 ) + (c.b * 0.114) > 186) ? "black" : "white";
+    // const to = computed(() => cyclingWindResistanceComponentMph(Stuff.mpsToMph(props.speed), props.direction, directionToDegrees));
+    // const from = computed(() => cyclingWindResistanceComponentMph(Stuff.mpsToMph(props.speed), props.direction, directionToDegrees + 180));
+    // const cyclingColour = computed(() => {
+    //     const c = cyclingColourValues();
+    //     return `rgb(${c.r} ${c.g} ${c.b})`;
+    // });
 
     const textColor = (c: IColour): string => {
-        console.log("colour = ", c);
         return ((c.r * 0.299) + (c.g * 0.587 ) + (c.b * 0.114) > 186) ? "black" : "white"
     };
 
     const cyclingColourValues = (): IColour => {
-        console.log("props = ", props);
-
-        const speedComponentMph = cyclingWindResistanceComponentMph(toMph(props.speed), props.direction, props.cyclingDirection);
+        const speedComponentMph = cyclingWindResistanceComponentMph(Stuff.mpsToMph(props.speed), props.direction, props.cyclingDirection);
         const absoluteSpeed = Math.abs(speedComponentMph);
         const c1 = absoluteSpeed < 15 ? 255 - (510 * absoluteSpeed / 30.0) : 0; // 255 -> 0 ...
         const c2 = absoluteSpeed < 10 ? 255 : 255 - (510 * (absoluteSpeed - 10) / 30.0); // ...255 -> 0
-
-        console.log(`speedComponentMph=${speedComponentMph} | c2=${c2}`);
-
         return speedComponentMph < 0
             ? { r: 255, g: c1, b: 255 }  // assisting (white -> magenta)
             : { r: 255, g: c2, b: c1 }  // resisting (white -> yellow -> red)

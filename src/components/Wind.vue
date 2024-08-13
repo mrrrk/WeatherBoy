@@ -1,21 +1,20 @@
 <template>
     <div style="display:flex;position:relative">
         <img src="/wind.png" :style="imageStyle">
-        <div :style="textStyle">{{toMph(speed)}}</div>
+        <div :style="textStyle">{{Stuff.mpsToMph(speed)}}</div>
     </div>
 </template>
 
 <script setup lang="ts">
 
     import { computed } from "vue";
+    import Stuff from "@/utilities/Stuff";
 
     const props = defineProps({
         size: { type: Number, required: false, default: 150 },
         speed: { type: Number, required: true },
         direction: { type: Number, required: true },
     });
-
-    const toMph = (speedMps: number) => Math.round(speedMps * 2.23694);
 
     const imageStyle = computed(() => ({
         width: `${props.size}px`,

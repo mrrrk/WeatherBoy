@@ -26,6 +26,7 @@
 <script setup lang="ts">
 
     import { computed } from "vue";
+    import Stuff from "@/utilities/Stuff";
     import type { IForecast } from "@/model/IForecast";
     import Wind from "@/components/Wind.vue";
     import { symbolImageFileNames } from "@/model/Enums";
@@ -75,12 +76,11 @@
     });
 
     const windGustText = computed(() => {
-        return `Gust: ${Math.round(props.forecast?.midday10MWindGust * 2.23694)}`; // m/s
-        //return `Gust: ${Math.round(props.forecast?.midday10MWindGust * 1.15078)}`; // knots
+        return `Gust: ${Stuff.mpsToMph(props.forecast?.midday10MWindGust ?? 0 * 2.23694)}`; // m/s
     });
 
     const windDirectionText = computed(() => {
-        const bearing = props.forecast?.midday10MWindDirection;
+        const bearing = props.forecast?.midday10MWindDirection ?? 0;
         const i = Math.round(bearing / 22.5);
         const dirctions = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
         return dirctions[(i % 16)];

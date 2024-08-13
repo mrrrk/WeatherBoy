@@ -33,6 +33,7 @@
 <script setup lang="ts">
 
     import { type Ref, onMounted, ref, reactive, computed, watch } from "vue";
+    import Stuff from "@/utilities/Stuff";
     import MetofficeData from "@/utilities/MetofficeData";
 
     import Temperature from "@/components/Temperature.vue";
@@ -44,6 +45,7 @@
     import TimeAndDate from "@/components/TimeAndDate.vue";
     import Extra from "@/components/Extra.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
+    import { IForecast } from "@/model/IForecast";
 
     const dayForecasts: Ref<Array<IForecast>> = ref([]);
     const hourForecasts: Ref<Array<IForecast>> = ref([]);
@@ -79,11 +81,11 @@
     const windDirection = computed(() => currentHourly.value?.windDirectionFrom10m ?? 0 );
 
     const windGustText = computed(() => {
-        return `Gust: ${Math.round(currentHourly.value?.max10mWindGust * 2.23694)}`;
+        return `Gust: ${Stuff.mpsToMph(currentHourly.value?.max10mWindGust ?? 0)}`;
     });
 
     const windDirectionText = computed(() => {
-        const bearing = currentHourly.value?.windDirectionFrom10m;
+        const bearing = currentHourly.value?.windDirectionFrom10m ?? 0;
         const i = Math.round(bearing / 22.5);
         const dirctions = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
         return dirctions[(i % 16)];

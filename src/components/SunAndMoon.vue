@@ -24,25 +24,17 @@
 <script setup lang="ts">
 
     import { onMounted, type Ref, ref, computed } from "vue";
+    import Secrets from "@/utilities/Secrets";
+    import Stuff from "@/utilities/Stuff";
     import Moon from "@/utilities/Moon";
-    import SunriseSunset from "@/utilities/SunriseSunset";
-    import type { ISunriseSunset     } from "@/model/ISunriseSunset";
+    import Sun from "@/utilities/Sun";
+    import type { SunriseSunsetResult } from "@/utilities/Sun";
 
-    const data: Ref<ISunriseSunset|null> = ref(null);
+    const sunData: Ref<SunriseSunsetResult|null> = ref(null);
     const moonCanvas: Ref<HTMLCanvasElement|undefined> = ref();
     const moonPhaseText = ref("");
 
     onMounted(async() => {
-
-        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-04T12:13:00"))));
-        console.log("qtr: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-12T16:18:00"))));
-        console.log("ful: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-19T19:25:00"))));
-        console.log("3rd: ", Moon.lunarAgeDays(new Date(Date.parse("2024-08-26T10:25:00"))));
-        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-09-03T02:55:00"))));
-        console.log("new: ", Moon.lunarAgeDays(new Date(Date.parse("2024-10-02T19:49:00"))));
-
-        //console.log("DATA = ", data.value);
-
         // let p = 0;
         // setInterval(() => {
         //     drawMoon(p);
@@ -52,9 +44,11 @@
         // }, 200);
 
         const refresh = async () => {
-            data.value = await SunriseSunset.load();
+            const now = new Date().getTime();
 
-            const julianNow = Moon.julianDateFromUnixTime(new Date().getTime());
+            sunData.value = Sun.SunriseAndSunset(now, Secrets.latitude, Secrets.longitude);
+
+            const julianNow = Stuff.epochMillisToJulian(now);
             const phaseAngle = Moon.phaseAngleDegrees(julianNow);
             const tiltAngle = Moon.tiltDegrees(phaseAngle);
             const illuminatedPercent = Math.round(Moon.illuminatedFraction(phaseAngle) * 100);
@@ -70,26 +64,11 @@
 
     });
 
-    const pad2 = (value: string|number) => {
-        const s = String(value);
-        return s.length == 1 ? `0${s}` : s;
-    }
+    const sunriseText = computed(() => Stuff.timeTextShort(new Date(sunData.value?.sunrise ?? 0)));
 
-    const formatTime = (dateValue: string|null|undefined) => {
-        if (!dateValue) return "- - -";
-        const date = new Date(Date.parse(dateValue ?? "0"));
-        return `${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
-    }
-
-    const sunriseText = computed(() => formatTime(data.value?.results.sunrise));
-
-    const sunsetText = computed(() => formatTime(data.value?.results.sunset));
+    const sunsetText = computed(() => Stuff.timeTextShort(new Date(sunData.value?.sunset ?? 0)));
 
     const getMoonPhaseText = (phaseAngle: number, illuminationPercent: number) => {
-        //const percent = Moon.illuminationPercent();
-
-
-
         // are these fractions right?  maybe not so much...
 
         const percentText = `(${illuminationPercent}% ph: ${Math.round(phaseAngle)}°)`;
@@ -127,7 +106,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
 
         context.translate(centreX, centreY);
-        context.rotate(tiltDegrees * radiansPerDegree);
+        context.rotate(Stuff.toRadians(tiltDegrees));
         context.translate(-centreX, -centreY);
 
         context.beginPath();
@@ -171,7 +150,8 @@
         // take a chip out of it
         context.beginPath();
         context.fillStyle = shadow;
-        context.ellipse(x, y, w, r, 0, startAngle, endAngle);
+        // started getting a thin line artefact (after rotating) - so extend the angles a little to fix it!
+        context.ellipse(x, y, w, r, 0, startAngle - 0.03, endAngle + 0.03);
         context.fill();
     }
 
