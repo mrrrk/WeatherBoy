@@ -3,11 +3,12 @@
    <div class="grid-container">
 
         <div class="tile"><Temperature :forecast="currentHourly" /></div>
-        <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3"><WeatherBoy :forecast="currentHourly" /></div>
+        <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3">
+            <!-- <WeatherBoy :forecast="currentHourly" /> -->
+            <MoonTest />
+        </div>
         <div class="tile" style="position:relative">
             <Wind :size="150" :speed="windSpeed" :direction="windDirection"></Wind>
-
-
             <div style="position:absolute;bottom:10px;left:10px">
                 {{ windDirectionText }} - {{ windGustText }}
             </div>
@@ -36,6 +37,7 @@
 
     import Temperature from "@/components/Temperature.vue";
     import WeatherBoy from "@/components/WeatherBoy.vue";
+    import MoonTest from "@/components/MoonTest.vue";
     import Wind from "@/components/Wind.vue";
     import SunAndMoon from "@/components/SunAndMoon.vue";
     import Cycling from "@/components/Cycling.vue";

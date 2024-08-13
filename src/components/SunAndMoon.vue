@@ -56,9 +56,10 @@
 
             const julianNow = Moon.julianDateFromUnixTime(new Date().getTime());
             const phaseAngle = Moon.phaseAngleDegrees(julianNow);
+            const tiltAngle = Moon.tiltDegrees(phaseAngle);
             const illuminatedPercent = Math.round(Moon.illuminatedFraction(phaseAngle) * 100);
 
-            drawMoon(phaseAngle);
+            drawMoon(phaseAngle, tiltAngle);
             moonPhaseText.value = getMoonPhaseText(phaseAngle, illuminatedPercent);
         }
 
@@ -108,11 +109,9 @@
         }
     }
 
-    // todo? rotate through cycle for UK pov?
+    const radiansPerDegree = Math.PI / 180.0;
 
-    // alternate approach: https://celestialprogramming.com/snippets/moonPhaseRender.html
-
-    const drawMoon = (phaseAngleDegrees: number) => {
+    const drawMoon = (phaseAngleDegrees: number, tiltDegrees: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;
         const context = canvas.getContext("2d");
@@ -122,32 +121,29 @@
         const radius = Math.min(centreX, centreY) - 1.0;
         const shadow = "#6688FF";
 
-        const phaseAngle = Math.PI * 2.0 * phaseAngleDegrees / 360;
+        const phaseAngle = phaseAngleDegrees * radiansPerDegree;
         const crecentWidth = Math.abs(radius * Math.cos(phaseAngle));
 
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        // rotate - TODO - what angle???
-        // https://svs.gsfc.nasa.gov/5187/ ??? (no - libration is a different thing)
-
-        // context.translate(centreX, centreY);
-        // context.rotate(Math.PI / 4);
-        // context.translate(-centreX, -centreY);
+        context.translate(centreX, centreY);
+        context.rotate(tiltDegrees * radiansPerDegree);
+        context.translate(-centreX, -centreY);
 
         context.beginPath();
         context.arc(centreX, centreY, radius, 0.0, 2.0 * Math.PI, false);
         context.fillStyle = shadow;
         context.fill();
 
-        if(angle < Math.PI / 2) {
+        if(phaseAngle < Math.PI / 2) {
             // new moon -> waxing crecent -> quarter
             drawCrecent(context, shadow, centreX, centreY, crecentWidth, radius, true);
         }
-        else if(angle < Math.PI) {
+        else if(phaseAngle < Math.PI) {
             // quarter -> waxing gibbous -> full moon
             drawGibbous(context, centreX, centreY, crecentWidth, radius, true);
         }
-        else if(angle < 3 * Math.PI / 2) {
+        else if(phaseAngle < 3 * Math.PI / 2) {
             // full moon -> waning gibbous -> last quarter
             drawGibbous(context, centreX, centreY, crecentWidth, radius, false);
         }

@@ -42,9 +42,8 @@ module Moon {
     const unixTimeFromJulianDate = (jd: number) => (jd - 2440587.5) * 86400000;
 
     const constrainAngle = (degrees: number) => {
-        let t = degrees % 360;
-        if (t < 0) t += 360;
-        return t;
+        const t = degrees % 360;
+        return t < 0 ? t + 360 : t;
     }
 
     const radiansPerDegree = Math.PI / 180.0;
@@ -64,16 +63,20 @@ module Moon {
         const Mp = constrainAngle(134.9633964 + 477198.8675055 * T + 0.0087414 * tSquared + 1.0/69699.0 * tCubed - 1.0/14712000.0 * tToTheFour) * radiansPerDegree; //47.4
 
         //48.4
-        const iDegrees = constrainAngle(180 - D*180/Math.PI - 6.289 * Math.sin(Mp) + 2.1 * Math.sin(M) -1.274 * Math.sin(2*D - Mp) -0.658 * Math.sin(2*D) -0.214 * Math.sin(2*Mp) -0.11 * Math.sin(D));
+        const iDegrees = constrainAngle(D * 180 / Math.PI - 6.289 * Math.sin(Mp) + 2.1 * Math.sin(M) -1.274 * Math.sin(2 * D - Mp) -0.658 * Math.sin(2 * D) -0.214 * Math.sin(2 * Mp) -0.11 * Math.sin(D));
 
+        // new moon = 0°, full moon = 180°
         return iDegrees;
     }
 
     // illumination from zero to one
-    export const illuminatedFraction = (phaseAngleDegrees: number) => {
-        console.log(`deg = ${phaseAngleDegrees} rad=${phaseAngleDegrees * radiansPerDegree} frac=${ (1 + Math.cos(phaseAngleDegrees * radiansPerDegree)) / 2}`)
-        return (1 + Math.cos(phaseAngleDegrees * radiansPerDegree)) / 2;
-    }
+    export const illuminatedFraction = (phaseAngleDegrees: number) => (1 + Math.cos((phaseAngleDegrees - 180) * radiansPerDegree)) / 2;
 
+    //
+    // -- moon tilt - I got this formula looking at data from https://moonphases.co.uk/
+    //     - it's a pretty sketchy guess... (see moontest.vue)
+    //
+
+    export const tiltDegrees = (phaseAngleDegrees: number) => 40 * (1 + (-constrainAngle(phaseAngleDegrees) / 180));
 }
 export default Moon;
