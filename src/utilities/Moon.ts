@@ -57,6 +57,7 @@ module Moon {
     //
     // -- moon tilt - I got this formula looking at data from https://moonphases.co.uk/
     //     - it's a pretty sketchy guess... (see moontest.vue)
+    //     - also https://astronomy.stackexchange.com/questions/24711/how-does-the-moon-look-like-from-different-latitudes-of-the-earth
     //
 
     export const tiltDegrees = (phaseAngleDegrees: number) => 40 * (1 + (-Stuff.constrainAngle(phaseAngleDegrees) / 180));

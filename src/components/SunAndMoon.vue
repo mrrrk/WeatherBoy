@@ -88,8 +88,6 @@
         }
     }
 
-    const radiansPerDegree = Math.PI / 180.0;
-
     const drawMoon = (phaseAngleDegrees: number, tiltDegrees: number) => {
         const canvas = moonCanvas.value;
         if (!canvas) return;
@@ -100,7 +98,7 @@
         const radius = Math.min(centreX, centreY) - 1.0;
         const shadow = "#6688FF";
 
-        const phaseAngle = phaseAngleDegrees * radiansPerDegree;
+        const phaseAngle = Stuff.toRadians(phaseAngleDegrees);
         const crecentWidth = Math.abs(radius * Math.cos(phaseAngle));
 
         context.clearRect(0, 0, canvas.width, canvas.height);
