@@ -50,7 +50,7 @@
         }
     }
 
-    const setItemRef = (canvas: HTMLCanvasElement) => {
+    const setItemRef: any = (canvas: HTMLCanvasElement) => {
         moonCanvasses.push(canvas);
     }
 

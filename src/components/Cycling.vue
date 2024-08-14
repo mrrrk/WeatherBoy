@@ -6,47 +6,37 @@
     <div>Wed 4pm </div> -->
 
     <div class="d-flex">
-        <img src="/bicycle.svg" height="20px" width="20px" />
+        <img src="/img/bicycle.svg" height="20px" width="20px" />
         <div style="margin-left:10px; margin-bottom:6px; line-height: 20px;"><i>{{ todayDay }}</i></div>
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ todayMorningTime }}</div>
-        <WindCycling :size="50" :speed="5" :direction="230" :cyclingDirection="70" />
+        <WindCycling :size="50" :speed="todayMorningWindSpeed" :direction="todayMorningWindDirection" :cyclingDirection="70" />
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ todayAfternoonTime }}</div>
-        <WindCycling :size="50" :speed="5" :direction="230" :cyclingDirection="250" />
+        <WindCycling :size="50" :speed="todayAfternoonWindSpeed" :direction="todayAfternoonWindDirection" :cyclingDirection="250" />
     </div>
 
     <div class="d-flex" style="margin-top:6px">
-        <img src="/bicycle.svg" height="20px" width="20px" />
+        <img src="/img/bicycle.svg" height="20px" width="20px" />
         <div style="margin-left:10px; margin-bottom:6px; line-height: 20px;"><i>{{ tomorrowDay }}</i></div>
     </div>
     <div class="d-flex">
-
         <div style="width:50px">{{ tomorrowMorningTime }}</div>
-        <WindCycling :size="50" :speed="5" :direction="230" :cyclingDirection="70" />
+        <WindCycling :size="50" :speed="tomorrowMorningWindSpeed" :direction="tomorrowMorningWindDirection" :cyclingDirection="70" />
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ tomorrowAfternoonTime }}</div>
-        <WindCycling :size="50" :speed="5" :direction="230" :cyclingDirection="250" />
+        <WindCycling :size="50" :speed="tomorrowAfternoonWindSpeed" :direction="tomorrowAfternoonWindDirection" :cyclingDirection="250" />
     </div>
-
-    <!-- <div class="d-flex" >
-        <div v-for="colour in colours1" :style="{ backgroundColor: colour, width: '5px', height: '20px' }"></div>
-    </div>
-    <div class="d-flex" >
-        <div v-for="colour in colours2" :style="{ backgroundColor: colour, width: '5px', height: '20px' }"></div>
-    </div>
-    <div class="d-flex" >
-        <div v-for="colour in colours3" :style="{ backgroundColor: colour, width: '5px', height: '20px' }"></div>
-    </div> -->
 
 </template>
 
 <script setup lang="ts">
 
     import { computed, onMounted, type Ref, ref } from "vue";
+    import Stuff from "@/utilities/Stuff";
     import type { IForecast } from "@/model/IForecast";
 
     import WindCycling from "@/components/WindCycling.vue";
@@ -94,13 +84,25 @@
     // const colours2: Ref<Array<string>> = ref([]);
     // const colours3: Ref<Array<string>> = ref([]);
 
-    const todayDay = computed(() => dayText(todayMorningForecast.value?.when));
-    const todayMorningTime = computed(() => timeText(todayMorningForecast.value?.when));
-    const todayAfternoonTime = computed(() => timeText(todayAfternoonForecast.value?.when));
+    const todayDay = computed(() => Stuff.dayText(todayMorningForecast.value?.when));
+    const todayMorningTime = computed(() => Stuff.timeTextShort(todayMorningForecast.value?.when));
+    const todayAfternoonTime = computed(() => Stuff.timeTextShort(todayAfternoonForecast.value?.when));
 
-    const tomorrowDay = computed(() => dayText(tomorrowMorningForecast.value?.when));
-    const tomorrowMorningTime = computed(() => timeText(tomorrowMorningForecast.value?.when));
-    const tomorrowAfternoonTime = computed(() => timeText(tomorrowAfternoonForecast.value?.when));
+    const tomorrowDay = computed(() => Stuff.dayText(tomorrowMorningForecast.value?.when));
+    const tomorrowMorningTime = computed(() => Stuff.timeTextShort(tomorrowMorningForecast.value?.when));
+    const tomorrowAfternoonTime = computed(() => Stuff.timeTextShort(tomorrowAfternoonForecast.value?.when));
+
+    const todayMorningWindSpeed = computed(() => todayMorningForecast.value?.windSpeed10m ?? 99 );
+    const todayMorningWindDirection = computed(() => todayMorningForecast.value?.windDirectionFrom10m ?? 0 );
+
+    const todayAfternoonWindSpeed = computed(() => todayAfternoonForecast.value?.windSpeed10m ?? 99 );
+    const todayAfternoonWindDirection = computed(() => todayAfternoonForecast.value?.windDirectionFrom10m ?? 0 );
+
+    const tomorrowMorningWindSpeed = computed(() => tomorrowMorningForecast.value?.windSpeed10m ?? 99 );
+    const tomorrowMorningWindDirection = computed(() => tomorrowMorningForecast.value?.windDirectionFrom10m ?? 0 );
+
+    const tomorrowAfternoonWindSpeed = computed(() => tomorrowAfternoonForecast.value?.windSpeed10m ?? 99 );
+    const tomorrowAfternoonWindDirection = computed(() => tomorrowAfternoonForecast.value?.windDirectionFrom10m ?? 0 );
 
     const todayMorningForecast = computed(() => {
         const now = new Date();
@@ -131,17 +133,5 @@
         const time = new Date(tomorrowStart.getTime() + 16 * 60 * 60 * 1000);
         return props.forecastHours.find(f => f.when != null && f.when >= time);
     });
-
-    // helper funcs...
-
-    const pad2 = (value: string|number) => {
-        const s = String(value);
-        return s.length == 1 ? `0${s}` : s;
-    }
-
-    const timeText = (when: Date) => when ? `${pad2(when.getHours())}:${pad2(when.getMinutes())}` : "- - -";
-
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const dayText = (when: Date) => when ? days[when.getDay()] : "- - -";
 
 </script>

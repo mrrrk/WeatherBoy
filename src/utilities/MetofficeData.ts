@@ -63,6 +63,8 @@ module MetofficeData {
         }
     }
 
+    // maybe this should try and call shortly after the top of the hour?
+
     export const load = async(timeSteps: string): Promise<Array<IForecast>> => {
         const localData = loadLocal(timeSteps);
         if(localData == null) {
@@ -76,7 +78,7 @@ module MetofficeData {
             return []; // :-(
         }
 
-        // refresh if older than X
+        // refresh if older than maxAgeMinutes
         const maxAgeMinutes = timeSteps == "daily" ? 120 : 15;
         const isOld = localData.timestamp < new Date(new Date().getTime() - (1000 * 60 * maxAgeMinutes)).getTime();
 

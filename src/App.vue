@@ -45,29 +45,25 @@
     import TimeAndDate from "@/components/TimeAndDate.vue";
     import Extra from "@/components/Extra.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
-    import { IForecast } from "@/model/IForecast";
+    import type { IForecast } from "@/model/IForecast";
 
     const dayForecasts: Ref<Array<IForecast>> = ref([]);
     const hourForecasts: Ref<Array<IForecast>> = ref([]);
 
     onMounted(() => {
         refresh();
+
         // run refresh every minute - but note MetofficeData has its own caching policy that prevents too many requests...
-        //setInterval(refresh, 60000);
+        //  - daily makes calls max once every 2 hours (12 per day)
+        //  - hourly calls max once per 15 mins (96 per day)
+        //  - total 108 calls < max 360 calls per day
+        setInterval(refresh, 60000);
     });
 
     const refresh = async () => {
-        console.log("loading...");
         dayForecasts.value = await MetofficeData.load("daily");
         hourForecasts.value = await MetofficeData.load("hourly"); // gets next 48 hours from now...
-
-        console.log(`+++ refresh | day forecasts: ${dayForecasts.value?.length} | hour forecasts: ${hourForecasts.value?.length}`);
-
-        console.log("tomorrow = ", dayForecasts.value[2]);
     }
-
-    // TODO - check times
-    const currentHourly1 = computed(() => hourForecasts.value[0] );
 
     // possible to have forecasts from past - so try to get the current one
     const currentHourly = computed(() => {

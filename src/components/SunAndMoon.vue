@@ -4,12 +4,12 @@
     </div>
     <div class="d-flex" style="height:67px">
         <div>
-            <img src="/Sunrise.png" style="width: 70px" />
+            <img src="/img/Sunrise.png" style="width: 70px" />
             <div style="text-align:center">{{sunriseText}}</div>
         </div>
         <div class="flex-grow-1"></div>
         <div>
-            <img src="/Sunset.png" style="width: 70px" />
+            <img src="/img/Sunset.png" style="width: 70px" />
             <div style="text-align:center">{{sunsetText}}</div>
         </div>
     </div>

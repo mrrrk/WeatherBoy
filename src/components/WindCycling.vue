@@ -3,15 +3,8 @@
         <div style="position:relative; width:20px;margin-right:3px">
             <div :style="textStyle">{{ speedMph }}</div>
         </div>
-
-        <div><img src="/windMini.png" :style="imageStyle"></div>
-
+        <div><img src="/img/windMini.png" :style="imageStyle"></div>
     </div>
-
-    <!-- <div style="display:flex;position:relative">
-        <img src="/wind.png" :style="imageStyle">
-        <div :style="textStyle">{{Stuff.mpsToMph(speed)}}</div>
-    </div> -->
 </template>
 
 <script lang="ts">
@@ -24,7 +17,7 @@ interface IColour {
 
 <script setup lang="ts">
 
-    import { computed } from "vue";
+    import { computed, type Ref } from "vue";
     import Stuff from "@/utilities/Stuff";
 
     const props = defineProps({
@@ -35,7 +28,7 @@ interface IColour {
         cyclingDirection: { type: Number, required: true }
     });
 
-    const imageStyle = computed(() => ({
+    const imageStyle: Ref<any> = computed(() => ({
         position: "relative",
         height: "20px",
         transform: `rotate(${props.direction + 180}deg)`
@@ -44,7 +37,7 @@ interface IColour {
     // style="position:absolute;color:#666;padding:58px;font-size:30px;font-weight:bold;text-align: center;"
 
     //line-height:20px;height:20px;
-    const textStyle = computed(() => {
+    const textStyle: Ref<any> = computed(() => {
         const colour = cyclingColourValues();
         return {
             position: "absolute",

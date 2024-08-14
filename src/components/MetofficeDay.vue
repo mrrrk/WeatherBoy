@@ -53,18 +53,18 @@
     }));
 
     const symbolSource = computed(() => {
-        if (props.forecast?.daySignificantWeatherCode == null) return "/WeatherSymbols/Unknown.png";
+        if (props.forecast?.daySignificantWeatherCode == null) return "/img/WeatherSymbols/Unknown.png";
         const i = props.forecast?.daySignificantWeatherCode ?? 0;
-        if(i < 0 || i >= symbolImageFileNames.length) return "/WeatherSymbols/Unknown.png";
-        return `/WeatherSymbols/${symbolImageFileNames[i]}`;
+        if(!symbolImageFileNames.hasOwnProperty(i)) return "/img/WeatherSymbols/Unknown.png";
+        return `/img/WeatherSymbols/${(symbolImageFileNames as any)[i]}`;
     });
 
     const dayTempText = computed(() => {
-        return `${Math.round(props.forecast?.dayMaxScreenTemperature)}°C`;
+        return `${Math.round(props.forecast?.dayMaxScreenTemperature ?? 0)}°C`;
     });
 
     const nightTempText = computed(() => {
-        return `${Math.round(props.forecast?.nightMinScreenTemperature)}°C`;
+        return `${Math.round(props.forecast?.nightMinScreenTemperature ?? 0)}°C`;
     });
 
     const windDirection = computed(() => {
@@ -85,11 +85,5 @@
         const dirctions = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
         return dirctions[(i % 16)];
     });
-
-    // const imageStyle = computed(() => ({
-    //     width: `${props.size}px`,
-    //     position: "absolute",
-    //     transform: `rotate(${props.direction}deg)`
-    // }));
 
 </script>

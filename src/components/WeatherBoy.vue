@@ -26,10 +26,11 @@ rate = {{ forecast?.precipitationRate }}<br>
     const temperatureMaxText = computed(() => `${props.forecast?.dayMaxScreenTemperature}°C`);
 
     const symbolSource = computed(() => {
-        if (props.forecast?.significantWeatherCode == null) return "/WeatherSymbols/Unknown.png";
+        if (props.forecast?.significantWeatherCode == null) return "/img/WeatherSymbols/Unknown.png";
         const i = props.forecast?.significantWeatherCode ?? 0;
-        if(i < 0 || i >= symbolImageFileNames.length) return "/WeatherSymbols/Unknown.png";
-        return `/WeatherSymbols/${symbolImageFileNames[i]}`;
+        if(!symbolImageFileNames.hasOwnProperty(i)) return "/img/WeatherSymbols/Unknown.png";
+        return `/WeatherSymbols/${(symbolImageFileNames as any)[i]}`;
+
     });
 
     const weatherBoySource = computed(() => {
@@ -38,24 +39,26 @@ rate = {{ forecast?.precipitationRate }}<br>
         // dry / rain1 / rain2
 
         const forecast = props.forecast;
-        if(!forecast) return "/WeatherBoy/Unknown.png";
+        if(!forecast) return "/img/WeatherBoy/Unknown.png";
+        const temperature = (forecast?.feelsLikeTemperature ?? 0);
+        const precipitation = (forecast?.probOfPrecipitation ?? 0);
 
-        if(forecast.significantWeatherCode === 1 && forecast.feelsLikeTemperature > 22) return "/WeatherBoy/Trunks.png";
+        if(forecast.significantWeatherCode === 1 && (forecast?.feelsLikeTemperature ?? 0) > 22) return "/img/WeatherBoy/Trunks.png";
 
         const rain =
-            forecast.probOfPrecipitation >= 70 ? "Rain2" :
-            forecast.probOfPrecipitation >= 20 ? "Rain1" :
+            precipitation >= 70 ? "Rain2" :
+            precipitation >= 20 ? "Rain1" :
             "Dry";
         const clothes =
-            forecast.feelsLikeTemperature >= 22 ? "Shorts" :
-            forecast.feelsLikeTemperature >= 17 ? "Tshirt" :
-            forecast.feelsLikeTemperature >= 14 ? "Sweatshirt" :
-            forecast.feelsLikeTemperature >= 10 ? "Jumper" :
-            forecast.feelsLikeTemperature >= 6 ? "Coat" :
-            forecast.feelsLikeTemperature >= 2 ? "Scarf" :
+            temperature >= 22 ? "Shorts" :
+            temperature >= 17 ? "Tshirt" :
+            temperature >= 14 ? "Sweatshirt" :
+            temperature >= 10 ? "Jumper" :
+            temperature >= 6 ? "Coat" :
+            temperature >= 2 ? "Scarf" :
             "Hat";
 
-        return `/WeatherBoy/${clothes}${rain}.png`;
+        return `/img/WeatherBoy/${clothes}${rain}.png`;
 
     });
 

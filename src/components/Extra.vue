@@ -9,6 +9,7 @@
 <script setup lang="ts">
 
     import { computed } from "vue";
+    import Stuff from "@/utilities/Stuff";
     import type { IForecast } from "@/model/IForecast";
 
     const props = defineProps<{
@@ -16,14 +17,7 @@
     }>();
 
     const pressureText = computed(() => `${Math.round((props.forecast?.mslp ?? 0) / 100) } mb`);
-    const humidityText = computed(() => `${Math.round(props.forecast?.screenRelativeHumidity)}%`);
-
-    const pad2 = (value: string|number) => {
-        const s = String(value);
-        return s.length == 1 ? `0${s}` : s;
-    }
-
-    const forecastWhen = computed(() => `${pad2(props.forecast?.when?.getHours())}:${pad2(props.forecast?.when?.getMinutes())}`);
-
+    const humidityText = computed(() => `${Math.round(props.forecast?.screenRelativeHumidity ?? 0)}%`);
+    const forecastWhen = computed(() => Stuff.timeTextShort(props.forecast?.when));
 
 </script>
