@@ -53,7 +53,7 @@
             const tiltAngle = Moon.tiltDegrees(phaseAngle);
             const illuminatedPercent = Math.round(Moon.illuminatedFraction(phaseAngle) * 100);
 
-            drawMoon(phaseAngle, tiltAngle);
+            drawMoon(  phaseAngle, tiltAngle);
             moonPhaseText.value = getMoonPhaseText(phaseAngle, illuminatedPercent);
         }
 
