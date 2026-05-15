@@ -6,7 +6,7 @@ interface IMetofficeData {
     forecasts: Array<IForecast>
 }
 
-module MetofficeData {
+namespace MetofficeData {
 
     const saveLocal = (timeSteps: string, forecasts: Array<IForecast>) => {
         const json = JSON.stringify({
