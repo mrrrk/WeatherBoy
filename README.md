@@ -2,6 +2,8 @@
 
 ## To-do
 
+800 x 480
+
 Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
   - ✔️ get data + store locally with timestamp
   - error handling
@@ -11,7 +13,7 @@ Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
 ✔️ Metoffice day component
 ✔️ Weatherboy component
 
-☐ PWA stuff
+☐ PWA stuff (why...?)
 
 ## sunset / sunrise
 

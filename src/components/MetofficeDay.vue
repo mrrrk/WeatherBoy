@@ -2,13 +2,13 @@
     <div style="position:relative">
         <div style="position:absolute;top:0;left:0">{{ dayText }}</div>
 
-        <div style="height:80px;position:absolute;top:30px;left:0">
+        <div style="height:54px;position:absolute;top:20px;left:0">
             <img :src="symbolSource" :style="symbolStyle">
         </div>
 
         <div style="position:absolute;top:30px;right:0;text-align:right;">
-            <div style="font-size:20px; font-weight:bold;">{{ dayTempText }}</div>
-            <div style="font-size:18px">{{ nightTempText }}</div>
+            <div style="font-size:1.5rem; font-weight:bold;">{{ dayTempText }}</div>
+            <div style="font-size:1.3rem">{{ nightTempText }}</div>
         </div>
 
         <div style="position:absolute;top:110px;left:0">
@@ -47,9 +47,10 @@
         return days[day];
     });
 
+    // why is this computed?
     const symbolStyle = computed(() => ({
-        width: "90px",
-        height: "80px"
+        width: "60px",
+        height: "54px"
     }));
 
     const symbolSource = computed(() => {

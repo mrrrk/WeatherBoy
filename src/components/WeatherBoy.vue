@@ -8,6 +8,7 @@
 P% = {{ forecast?.probOfPrecipitation }}<br>
 amount = {{ forecast?.totalPrecipAmount }}<br>
 rate = {{ forecast?.precipitationRate }}<br>
+symbolSource = {{ symbolSource }}<br>
         </div>
     </div>
 </template>
@@ -29,7 +30,7 @@ rate = {{ forecast?.precipitationRate }}<br>
         if (props.forecast?.significantWeatherCode == null) return "/img/WeatherSymbols/Unknown.png";
         const i = props.forecast?.significantWeatherCode ?? 0;
         if(!symbolImageFileNames.hasOwnProperty(i)) return "/img/WeatherSymbols/Unknown.png";
-        return `/WeatherSymbols/${(symbolImageFileNames as any)[i]}`;
+        return `/img/WeatherSymbols/${(symbolImageFileNames as any)[i]}`;
 
     });
 

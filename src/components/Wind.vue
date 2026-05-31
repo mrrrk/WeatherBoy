@@ -11,7 +11,7 @@
     import Stuff from "@/utilities/Stuff";
 
     const props = defineProps({
-        size: { type: Number, required: false, default: 150 },
+        size: { type: Number, required: false, default: 120 },
         speed: { type: Number, required: true },
         direction: { type: Number, required: true },
     });

@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div style="font-size:40px; font-weight:bold;">{{ externalTemperature }}</div>
+        <div style="font-size:3rem; font-weight:bold;">{{ externalTemperature }}</div>
 
         <div>feels like {{ feelsLikeTemperature }}</div>
 
-        <div style="font-size:32px;">{{ internalTemperature }}</div>
+        <div style="font-size:2rem;">{{ internalTemperature }}</div>
         <div>internal temperture to do...</div>
     </div>
 </template>
