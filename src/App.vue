@@ -10,7 +10,7 @@
         <div class="tile" style="position:relative">
             <Wind :size="110" :speed="windSpeed" :direction="windDirection"></Wind>
             <div style="position:absolute;bottom:10px;left:10px">
-                {{ windDirectionText }} - {{ windGustText }}
+                {{ windDirectionText }} {{ windGustText }}
             </div>
         </div>
         <div class="tile"><TimeAndDate /></div>
@@ -76,7 +76,7 @@
     const windDirection = computed(() => currentHourly.value?.windDirectionFrom10m ?? 0 );
 
     const windGustText = computed(() => {
-        return `Gust: ${Stuff.mpsToMph(currentHourly.value?.max10mWindGust ?? 0)}`;
+        return `Gust ${Stuff.mpsToMph(currentHourly.value?.max10mWindGust ?? 0)}`;
     });
 
     const windDirectionText = computed(() => {

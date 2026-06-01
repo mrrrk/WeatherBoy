@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div><span class="legend">Forecast at:</span>{{ forecastWhen }}</div>
-        <div><span class="legend">Pressure:</span>{{pressureText}}</div>
-        <div><span class="legend">Humidity:</span>{{ humidityText }}</div>
+        <div><span class="legend">Forecast at</span>{{ forecastWhen }}</div>
+        <div><span class="legend">Pressure</span>{{pressureText}}</div>
+        <div><span class="legend">Humidity</span>{{ humidityText }}</div>
 
         <div style="margin-top:5px"><b>Precipitation:</b></div>
-        <div><span class="legend">Probability:</span>{{ forecast?.probOfPrecipitation }} %</div>
-        <div><span class="legend">Amount:</span>{{ forecast?.totalPrecipAmount }}</div>
-        <div><span class="legend">Rate:</span>{{ forecast?.precipitationRate }}</div>
+        <div><span class="legend">Probability</span>{{ forecast?.probOfPrecipitation }} %</div>
+        <div><span class="legend">Amount</span>{{ forecast?.totalPrecipAmount }}</div>
+        <div><span class="legend">Rate</span>{{ forecast?.precipitationRate }}</div>
 
     </div>
 </template>
@@ -27,11 +27,3 @@
     const forecastWhen = computed(() => Stuff.timeTextShort(props.forecast?.when));
 
 </script>
-<style scoped>
-    .legend {
-        display: inline-block;
-        min-width: 62px;
-        margin-right:5px;
-        color: #CCC;
-    }
-</style>

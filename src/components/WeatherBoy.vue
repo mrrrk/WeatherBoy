@@ -4,8 +4,9 @@
 
         <img :src="symbolSource" style="width: 100px; position:absolute; top:10px;right:10px" />
 
-        <div style="width: 120px; position:absolute; top:120px;right:10px">
-
+        <div style="width: 130px; position:absolute; top:120px;right:0px;">
+            <div><span class="legend" style="min-width: 30px;">Min</span>{{ temperatureMinText }}</div>
+            <div><span class="legend" style="min-width: 30px;">Max</span>{{ temperatureMaxText }}</div>
         </div>
     </div>
 </template>

@@ -55,6 +55,7 @@ export interface IForecast {
 
     dayMaxScreenTemperature: number|undefined;
     nightMinScreenTemperature: number|undefined;
+
     dayUpperBoundMaxTemp: number|undefined;
     nightUpperBoundMinTemp: number|undefined;
     dayLowerBoundMaxTemp: number|undefined;
