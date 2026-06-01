@@ -5,6 +5,7 @@
 Screen size 800 x 480 (RPi 7" screen)
 
 ## To-do
+  - edit clouds (too many black ones)
 
 ## Sun and Moon
   - calculated locally - does not use APIs (e.g. https://en.wikipedia.org/wiki/Sunrise_equation)
