@@ -5,7 +5,7 @@
     <div class="d-flex" style="width:370px; flex-wrap: wrap">
         <div v-for="date in dates" style="margin-right:2px;margin-bottom:4px">
             <canvas :ref="setItemRef" width="50" height="50" />
-            <div style="font-size:10px">{{ Stuff.dayMonthShort(date) }} {{ phaseAngleText(date) }}</div>
+            <div style="font-size:0.9rem">{{ Stuff.dayMonthShort(date) }} {{ phaseAngleText(date) }}</div>
         </div>
 
     </div>
