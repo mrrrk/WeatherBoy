@@ -2,7 +2,7 @@
 import type { ISunriseSunset } from "@/model/ISunriseSunset";
 import Secrets from "@/utilities/Secrets";
 
-module SunriseSunset {
+namespace SunriseSunset {
 
     let lastLoaded: Date = new Date(0);
     let data: ISunriseSunset|null = null;

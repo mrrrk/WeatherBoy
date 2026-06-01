@@ -1,14 +1,11 @@
 <template>
     <div style="position:relative;">
-        <img :src="weatherBoySource" style="width: 200px; position:absolute; top:20px;left:0" />
+        <img :src="weatherBoySource" style="width: 160px; position:absolute; top:10px;left:10px" />
 
-        <img :src="symbolSource" style="width: 100px; position:absolute; top:10px;right:0" />
+        <img :src="symbolSource" style="width: 100px; position:absolute; top:10px;right:10px" />
 
         <div style="width: 120px; position:absolute; top:120px;right:10px">
-P% = {{ forecast?.probOfPrecipitation }}<br>
-amount = {{ forecast?.totalPrecipAmount }}<br>
-rate = {{ forecast?.precipitationRate }}<br>
-symbolSource = {{ symbolSource }}<br>
+
         </div>
     </div>
 </template>

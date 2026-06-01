@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex">
-        <div style="position:relative; width:20px;margin-right:3px">
+        <div style="position:relative; width:16px;margin-right:3px">
             <div :style="textStyle">{{ speedMph }}</div>
         </div>
         <div><img src="/img/windMini.png" :style="imageStyle"></div>
@@ -30,13 +30,13 @@ interface IColour {
 
     const imageStyle: Ref<any> = computed(() => ({
         position: "relative",
-        height: "20px",
+        height: "16px",
         transform: `rotate(${props.direction + 180}deg)`
     }));
 
     // style="position:absolute;color:#666;padding:58px;font-size:30px;font-weight:bold;text-align: center;"
 
-    //line-height:20px;height:20px;
+    //line-height:16px;height:16px;
     const textStyle: Ref<any> = computed(() => {
         const colour = cyclingColourValues();
         return {
@@ -44,12 +44,12 @@ interface IColour {
             backgroundColor: `rgb(${colour.r} ${colour.g} ${colour.b})`,
             top: "0",
             left: "0",
-            lineHeight: "20px",
-            height: "20px",
-            width: "20px",
+            lineHeight: "16px",
+            height: "16px",
+            width: "16px",
             textAlign: "center",
             fontWeight: "bold",
-            fontSize: "16px",
+            fontSize: "12px",
             color: textColor(colour)
         };
     });

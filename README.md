@@ -1,32 +1,23 @@
 # weatherboy
 
+
+
+Screen size 800 x 480 (RPi 7" screen)
+
 ## To-do
 
-800 x 480
+## Sun and Moon
+  - calculated locally - does not use APIs (e.g. https://en.wikipedia.org/wiki/Sunrise_equation)
 
-Data loader - time, cache and throttle calls somehow... (< 1 per 4 mins)
-  - ✔️ get data + store locally with timestamp
-  - error handling
-  - display time stamp?
-  - refresh periodically (if timestamp < x)
-
-✔️ Metoffice day component
-✔️ Weatherboy component
-
-☐ PWA stuff (why...?)
-
-## sunset / sunrise
-
-   - ✔️
-   -  API
-   - ☐ Calculate ??? https://en.wikipedia.org/wiki/Sunrise_equation
-
-## metoffice
+### Metoffice API
+  - max daily calls = 360
+  - interval to check triggers once per minute
+  - uses locally cached data unless
+     - daily data is over two hours old (12 calls per day)
+     - hourly data is over 15 mins old (96 calls per day)
 
 https://github.com/MetOffice/weather_datahub_utilities/blob/main/site_specific_download/Documentation.md
 
-
-360 cals per day free = max 15 per hour = max every 4 mins
 
 endpoint: https://data.hub.api.metoffice.gov.uk/sitespecific/v0/point/[timeSteps]
 
@@ -40,3 +31,7 @@ query
     includeLocationName (default true)
     latitude
     longitude
+
+
+
+

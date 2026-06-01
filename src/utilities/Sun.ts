@@ -6,7 +6,7 @@ export interface SunriseSunsetResult {
     sunset: number;
 }
 
-module Sun {
+namespace Sun {
 
     // see https://en.wikipedia.org/wiki/Sunrise_equation
 

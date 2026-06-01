@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div style="font-size:2rem; font-weight:bold;">{{ timeText }}</div>
-        <div style="font-size:1.6rem;margin-top:10px">{{ dateText }}</div>
+        <div style="font-size:30px; font-weight:bold;">{{ timeText }}</div>
+        <div style="font-size:20px;margin-top:10px">{{ dateText }}</div>
     </div>
 </template>
 

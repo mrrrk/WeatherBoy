@@ -6,12 +6,12 @@
     <div>Wed 4pm </div> -->
 
     <div class="d-flex">
-        <img src="/img/bicycle.svg" height="20px" width="20px" />
-        <div style="margin-left:10px; margin-bottom:6px; line-height: 20px;"><i>{{ todayDay }}</i></div>
+        <img src="/img/bicycle.svg" height="18px" width="18px" />
+        <div style="margin-left:7px; margin-bottom:5px; line-height: 16px;"><i>{{ todayDay }}</i></div>
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ todayMorningTime }}</div>
-        <WindCycling :size="50" :speed="todayMorningWindSpeed" :direction="todayMorningWindDirection" :cyclingDirection="70" />
+        <WindCycling :size="40" :speed="todayMorningWindSpeed" :direction="todayMorningWindDirection" :cyclingDirection="70" />
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ todayAfternoonTime }}</div>
@@ -19,8 +19,8 @@
     </div>
 
     <div class="d-flex" style="margin-top:6px">
-        <img src="/img/bicycle.svg" height="20px" width="20px" />
-        <div style="margin-left:10px; margin-bottom:6px; line-height: 20px;"><i>{{ tomorrowDay }}</i></div>
+        <img src="/img/bicycle.svg" height="18px" width="18px" />
+        <div style="margin-left:7px; margin-bottom:5px; line-height: 16px;"><i>{{ tomorrowDay }}</i></div>
     </div>
     <div class="d-flex">
         <div style="width:50px">{{ tomorrowMorningTime }}</div>

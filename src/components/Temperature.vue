@@ -5,7 +5,7 @@
         <div>feels like {{ feelsLikeTemperature }}</div>
 
         <div style="font-size:2rem;">{{ internalTemperature }}</div>
-        <div>internal temperture to do...</div>
+        <div>internal temp to do...</div>
     </div>
 </template>
 
@@ -20,6 +20,6 @@
 
     const externalTemperature = computed(() => `${Math.round(props.forecast?.screenTemperature ?? 99)}°C`);
     const feelsLikeTemperature = computed(() => `${Math.round(props.forecast?.feelsLikeTemperature ?? 99)}°C`);
-    const internalTemperature = computed(() => `20°C`);
+    const internalTemperature = computed(() => `99°C`);
 
 </script>

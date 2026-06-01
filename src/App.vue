@@ -8,22 +8,21 @@
             <!-- <MoonTest /> -->
         </div>
         <div class="tile" style="position:relative">
-            <Wind :size="150" :speed="windSpeed" :direction="windDirection"></Wind>
+            <Wind :size="110" :speed="windSpeed" :direction="windDirection"></Wind>
             <div style="position:absolute;bottom:10px;left:10px">
                 {{ windDirectionText }} - {{ windGustText }}
             </div>
-
         </div>
         <div class="tile"><TimeAndDate /></div>
         <div class="tile"><Cycling :forecastHours="hourForecasts" /></div>
         <div class="tile"><SunAndMoon /></div>
         <div class="tile"><Extra :forecast="currentHourly" /></div>
 
-        <div class="tile"><MetofficeDay :forecast="dayForecasts[1]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :forecast="dayForecasts[2]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :forecast="dayForecasts[3]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :forecast="dayForecasts[4]"></MetofficeDay></div>
-        <div class="tile"><MetofficeDay :forecast="dayForecasts[5]"></MetofficeDay></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[1]" /></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[2]" /></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[3]" /></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[4]" /></div>
+        <div class="tile"><MetofficeDay :forecast="dayForecasts[5]" /></div>
 
     </div>
 
@@ -38,7 +37,7 @@
 
     import Temperature from "@/components/Temperature.vue";
     import WeatherBoy from "@/components/WeatherBoy.vue";
-    import MoonTest from "@/components/MoonTest.vue";
+    //import MoonTest from "@/components/MoonTest.vue";
     import Wind from "@/components/Wind.vue";
     import SunAndMoon from "@/components/SunAndMoon.vue";
     import Cycling from "@/components/Cycling.vue";

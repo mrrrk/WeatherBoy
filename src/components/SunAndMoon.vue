@@ -2,22 +2,25 @@
     <div style="margin-bottom:10px">
         Sun and Moon
     </div>
-    <div class="d-flex" style="height:67px">
+    <div class="d-flex" style="height:45px">
         <div>
-            <img src="/img/Sunrise.png" style="width: 70px" />
+            <img src="/img/Sunrise.png" style="width: 50px" />
             <div style="text-align:center">{{sunriseText}}</div>
         </div>
         <div class="flex-grow-1"></div>
         <div>
-            <img src="/img/Sunset.png" style="width: 70px" />
+            <img src="/img/Sunset.png" style="width: 50px" />
             <div style="text-align:center">{{sunsetText}}</div>
         </div>
     </div>
 
     <div class="d-flex">
         <div class="flex-grow-1" style="padding-top:8px">{{ moonPhaseText }}</div>
-        <div style="width:20px"></div>
-        <canvas ref="moonCanvas" width="60" height="60" />
+        <div style="width:5px"></div>
+        <div>
+            <canvas ref="moonCanvas" width="50" height="50" />
+        </div>
+
     </div>
 </template>
 
@@ -27,8 +30,7 @@
     import Secrets from "@/utilities/Secrets";
     import Stuff from "@/utilities/Stuff";
     import Moon from "@/utilities/Moon";
-    import Sun from "@/utilities/Sun";
-    import type { SunriseSunsetResult } from "@/utilities/Sun";
+    import Sun, { type SunriseSunsetResult } from "@/utilities/Sun";
 
     const sunData: Ref<SunriseSunsetResult|null> = ref(null);
     const moonCanvas: Ref<HTMLCanvasElement|undefined> = ref();
@@ -71,7 +73,7 @@
     const getMoonPhaseText = (phaseAngle: number, illuminationPercent: number) => {
         // are these fractions right?  maybe not so much...
 
-        const percentText = `(${illuminationPercent}% ph: ${Math.round(phaseAngle)}°)`;
+        const percentText = `${illuminationPercent}% | ${Math.round(phaseAngle)}°`;
 
         const f = (phaseAngle + 22.5) / 360; // ???
         //console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);

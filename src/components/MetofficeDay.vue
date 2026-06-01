@@ -6,18 +6,18 @@
             <img :src="symbolSource" :style="symbolStyle">
         </div>
 
-        <div style="position:absolute;top:30px;right:0;text-align:right;">
+        <div style="position:absolute;top:16px;right:0;text-align:right;">
             <div style="font-size:1.5rem; font-weight:bold;">{{ dayTempText }}</div>
             <div style="font-size:1.3rem">{{ nightTempText }}</div>
         </div>
 
-        <div style="position:absolute;top:110px;left:0">
+        <div style="position:absolute;top:90px;left:0">
             <div>{{ windDirectionText }}</div>
             <div>{{ windGustText }}</div>
         </div>
 
-        <div style="height:70px;position:absolute;top:80px;left:80px">
-            <Wind :size="70" :speed="windSpeed" :direction="windDirection"></Wind>
+        <div style="height:50px;position:absolute;top:72px;left:72px">
+            <Wind :size="50" :speed="windSpeed" :direction="windDirection"></Wind>
         </div>
 
     </div>
