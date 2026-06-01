@@ -1,6 +1,6 @@
 import Stuff from "@/utilities/Stuff";
 
-module Moon {
+namespace Moon {
 
     //
     // -- my poor attempt just used age of moon to determine angle and illumination...
