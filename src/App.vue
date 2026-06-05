@@ -9,7 +9,7 @@
         </div>
         <div class="tile" style="position:relative">
             <Wind :size="110" :speed="windSpeed" :direction="windDirection"></Wind>
-            <div style="position:absolute;bottom:10px;left:10px">
+            <div style="position:absolute;bottom:10px;left:10px;font-weight:bold;">
                 {{ windDirectionText }} {{ windGustText }}
             </div>
         </div>
@@ -92,6 +92,7 @@
     .grid-container {
         margin: 20px;
         height:100vh;
+        overflow: hidden;
         display:grid;
         grid-template-columns:
             repeat(5, 1fr)
