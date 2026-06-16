@@ -19,7 +19,8 @@
     import Moon from "@/utilities/Moon";
     import Stuff from "@/utilities/Stuff";
 
-    const startDate = new Date(Date.parse("2024-08-04T12:13:00"));
+    //const startDate = new Date(Date.parse("2026-06-04T12:13:00"));
+    const startDate = new Date();
     const dates: Ref<Array<Date>> = ref([...Array(35).keys()].map(i => new Date(startDate.getTime() + (i * 1000 * 60 * 60 * 24))));
     const moonCanvasses: Array<HTMLCanvasElement> = [];
 
@@ -28,7 +29,7 @@
         for(const date of dates.value) {
             const julian = Stuff.epochMillisToJulian(date.getTime());
             const phaseAngle = Moon.phaseAngleDegrees(julian);
-            drawMoon(moonCanvasses[i++], phaseAngle, Moon.tiltDegrees(phaseAngle, Secrets.latitude));
+            drawMoon(moonCanvasses[i++], phaseAngle, Moon.tiltDegrees(julian, phaseAngle, Secrets.latitude, Secrets.longitude));
 
             getIlluminatedFractionOfMoon(date);
         }

@@ -37,7 +37,7 @@
 
     import Temperature from "@/components/Temperature.vue";
     import WeatherBoy from "@/components/WeatherBoy.vue";
-    //import MoonTest from "@/components/MoonTest.vue";
+    import MoonTest from "@/components/MoonTest.vue";
     import Wind from "@/components/Wind.vue";
     import SunAndMoon from "@/components/SunAndMoon.vue";
     import Cycling from "@/components/Cycling.vue";
