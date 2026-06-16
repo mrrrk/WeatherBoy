@@ -66,11 +66,13 @@ namespace Moon {
     export const illuminatedFraction = (phaseAngleDegrees: number) => (1 + Math.cos(Stuff.toRadians(180 - phaseAngleDegrees))) / 2;
 
     //
-    // -- moon tilt - I got this formula looking at data from https://moonphases.co.uk/
-    //     - it's a pretty sketchy guess... (see moontest.vue)
-    //     - also https://astronomy.stackexchange.com/questions/24711/how-does-the-moon-look-like-from-different-latitudes-of-the-earth
+    // -- moon tilt
     //
 
-    export const tiltDegrees = (phaseAngleDegrees: number) => 40 * (1 - Stuff.constrainAngle(phaseAngleDegrees) / 180);
+    export const tiltDegrees = (phaseAngleDegrees: number, latitudeDegrees: number): number => {
+        const phase = Stuff.constrainAngle(phaseAngleDegrees);
+        const sign = phase <= 180 ? 1 : -1;
+        return sign * (90 - Math.abs(latitudeDegrees));
+    }
 }
 export default Moon;

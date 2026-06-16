@@ -52,7 +52,7 @@
 
             const julianNow = Stuff.epochMillisToJulian(now);
             const phaseAngle = Moon.phaseAngleDegrees(julianNow);
-            const tiltAngle = Moon.tiltDegrees(phaseAngle);
+            const tiltAngle = Moon.tiltDegrees(phaseAngle, Secrets.latitude);
             const illuminatedPercent = Math.round(Moon.illuminatedFraction(phaseAngle) * 100);
 
             drawMoon(  phaseAngle, tiltAngle);

@@ -15,6 +15,7 @@
 <script setup lang="ts">
 
     import { onMounted, type Ref, ref, computed } from "vue";
+    import Secrets from "@/utilities/Secrets";
     import Moon from "@/utilities/Moon";
     import Stuff from "@/utilities/Stuff";
 
@@ -27,7 +28,7 @@
         for(const date of dates.value) {
             const julian = Stuff.epochMillisToJulian(date.getTime());
             const phaseAngle = Moon.phaseAngleDegrees(julian);
-            drawMoon(moonCanvasses[i++], phaseAngle, Moon.tiltDegrees(phaseAngle));
+            drawMoon(moonCanvasses[i++], phaseAngle, Moon.tiltDegrees(phaseAngle, Secrets.latitude));
 
             getIlluminatedFractionOfMoon(date);
         }
