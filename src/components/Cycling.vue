@@ -10,11 +10,11 @@
         <div style="margin-left:7px; margin-bottom:5px; line-height: 16px;"><i>{{ todayDay }}</i></div>
     </div>
     <div class="d-flex">
-        <div style="width:50px">{{ todayMorningTime }}</div>
+        <div style="width:50px;font-weight: bold;">{{ todayMorningTime }}</div>
         <WindCycling :size="40" :speed="todayMorningWindSpeed" :direction="todayMorningWindDirection" :cyclingDirection="70" />
     </div>
     <div class="d-flex">
-        <div style="width:50px">{{ todayAfternoonTime }}</div>
+        <div style="width:50px;font-weight: bold;">{{ todayAfternoonTime }}</div>
         <WindCycling :size="50" :speed="todayAfternoonWindSpeed" :direction="todayAfternoonWindDirection" :cyclingDirection="250" />
     </div>
 
@@ -23,11 +23,11 @@
         <div style="margin-left:7px; margin-bottom:5px; line-height: 16px;"><i>{{ tomorrowDay }}</i></div>
     </div>
     <div class="d-flex">
-        <div style="width:50px">{{ tomorrowMorningTime }}</div>
+        <div style="width:50px;font-weight: bold;">{{ tomorrowMorningTime }}</div>
         <WindCycling :size="50" :speed="tomorrowMorningWindSpeed" :direction="tomorrowMorningWindDirection" :cyclingDirection="70" />
     </div>
     <div class="d-flex">
-        <div style="width:50px">{{ tomorrowAfternoonTime }}</div>
+        <div style="width:50px;font-weight: bold;">{{ tomorrowAfternoonTime }}</div>
         <WindCycling :size="50" :speed="tomorrowAfternoonWindSpeed" :direction="tomorrowAfternoonWindDirection" :cyclingDirection="250" />
     </div>
 

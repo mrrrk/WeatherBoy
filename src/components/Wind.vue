@@ -29,8 +29,8 @@
         width: `${props.size}px`,
         textAlign: "center",
         fontWeight: "bold",
-        fontSize: `${props.size / 4.0}px`,
-        paddingTop: `${props.size / 2.8}px`
+        fontSize: `${props.size / 3.2}px`,
+        paddingTop: `${props.size / 3.0}px`
     }));
 
 </script>

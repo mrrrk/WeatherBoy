@@ -1,6 +1,6 @@
 <template>
     <div style="position:relative">
-        <div style="position:absolute;top:0;left:0">{{ dayText }}</div>
+        <div style="position:absolute;top:0;left:0"><b>{{ dayText }}</b></div>
 
         <div style="height:54px;position:absolute;top:20px;left:0">
             <img :src="symbolSource" :style="symbolStyle">
@@ -12,8 +12,8 @@
         </div>
 
         <div style="position:absolute;top:90px;left:0">
-            <div>{{ windDirectionText }}</div>
-            <div>{{ windGustText }}</div>
+            <div><b>{{ windDirectionText }}</b></div>
+            <div><b>{{ windGustText }}</b></div>
         </div>
 
         <div style="height:50px;position:absolute;top:72px;left:72px">

@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-bottom:10px">
+    <div style="margin-bottom:10px; font-weight: bold;">
         Sun and Moon
     </div>
     <div class="d-flex" style="height:45px">
@@ -15,7 +15,7 @@
     </div>
 
     <div class="d-flex">
-        <div class="flex-grow-1" style="padding-top:8px">{{ moonPhaseText }}</div>
+        <div class="flex-grow-1" style="padding-top:8px; font-weight: bold;">{{ moonPhaseText }}</div>
         <div style="width:5px"></div>
         <div>
             <canvas ref="moonCanvas" width="50" height="50" />
@@ -73,7 +73,8 @@
     const getMoonPhaseText = (phaseAngle: number, illuminationPercent: number) => {
         // are these fractions right?  maybe not so much...
 
-        const percentText = `${illuminationPercent}% | ${Math.round(phaseAngle)}°`;
+        //const percentText = `${illuminationPercent}% | ${Math.round(phaseAngle)}°`;
+        const percentText = "";
 
         const f = (phaseAngle + 22.5) / 360; // ???
         //console.log(`f1 = ${lunarCycleFraction} |f2 = ${f}`);
