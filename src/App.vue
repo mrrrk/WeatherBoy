@@ -90,7 +90,8 @@
 
 <style>
     .grid-container {
-        margin: 20px;
+        box-sizing: border-box;
+        padding: 20px;
         height:100vh;
         overflow: hidden;
         display:grid;
@@ -98,7 +99,7 @@
             repeat(5, 1fr)
             /* calc(30vh - 20px); */;
         grid-template-rows:
-            repeat(3, calc(31vh - 10px));
+            repeat(3, minmax(0, 1fr));
         column-gap: 10px;
         row-gap: 10px;
 
