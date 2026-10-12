@@ -2,7 +2,7 @@
 
    <div class="grid-container">
 
-        <div class="tile"><Temperature :forecast="currentHourly" /></div>
+        <div class="tile"><Temperature :forecast="currentHourly" :sensor-data-set="sensorDataSet" /></div>
         <div class="tile" style="grid-column: 2 / 4; grid-row:1 / 3">
             <WeatherBoy :forecast="currentHourly" />
             <!-- <MoonTest /> -->
@@ -45,24 +45,32 @@
     import Extra from "@/components/Extra.vue";
     import MetofficeDay from "@/components/MetofficeDay.vue";
     import type { IForecast } from "@/model/IForecast";
+    import { SensorDataPoint } from "./model/SensorDataPoint";
+    import { SensorDataSet } from "./model/SensorDataSet";
 
     const dayForecasts: Ref<Array<IForecast>> = ref([]);
     const hourForecasts: Ref<Array<IForecast>> = ref([]);
+    const sensorDataSet = reactive(new SensorDataSet());
 
     onMounted(() => {
-        refresh();
+        refreshMetOffice();
+        sensorDataSet.refresh();
 
         // run refresh every minute - but note MetofficeData has its own caching policy that prevents too many requests...
         //  - daily makes calls max once every 2 hours (12 per day)
         //  - hourly calls max once per 15 mins (96 per day)
         //  - total 108 calls < max 360 calls per day
-        setInterval(refresh, 60000);
+        setInterval(refreshMetOffice, 60000);
+
+        // can do this more frequently
+        setInterval(() => sensorDataSet.refresh(), 10000);
     });
 
-    const refresh = async () => {
+    const refreshMetOffice = async () => {
         dayForecasts.value = await MetofficeData.load("daily");
         hourForecasts.value = await MetofficeData.load("hourly"); // gets next 48 hours from now...
     }
+
 
     // possible to have forecasts from past - so try to get the current one
     const currentHourly = computed(() => {
